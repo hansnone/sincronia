@@ -365,14 +365,15 @@ impl Orchestrator {
                         true
                     }
                     Err(_) => {
-                        // Necesita credenciales
+                        // Necesita credenciales — mostrar diálogo nativo de Windows
                         self.set_state(GlobalState::WaitingForCredentials);
                         self.notify(
                             "Sincronia — Credenciales requeridas",
                             "Se necesitan credenciales para conectar al NAS.",
                         );
 
-                        match credentials::prompt_credentials(
+                        match credentials::prompt_credentials_gui(
+                            &self.config.nas.primary_unc_path,
                             self.config.nas.maximum_credential_prompt_attempts,
                         ) {
                             Ok(creds) => {
