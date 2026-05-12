@@ -1,0 +1,64 @@
+[package]
+name = "sincronia"
+version = "0.1.0"
+edition = "2024"
+description = "Motor de respaldo NAS de alto rendimiento para Windows 11 — 10 GbE"
+authors = ["sincronia"]
+
+[dependencies]
+# Serialización y configuración
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+serde_json = "1"
+
+# Hashing
+blake3 = "1"
+sha2 = "0.10"
+
+# Concurrencia
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = "0.2"
+
+# CSV
+csv = "1"
+
+# Fechas
+chrono = { version = "0.4", features = ["serde"] }
+
+# Errores
+thiserror = "2"
+anyhow = "1"
+
+# Utilidades
+uuid = { version = "1", features = ["v4"] }
+ctrlc = "3"
+open = "5"
+rpassword = "5"
+glob = "0.3"
+
+# Windows APIs
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_NetworkManagement_WNet",
+    "Win32_Storage_FileSystem",
+    "Win32_Security",
+    "Win32_System_Console",
+    "Win32_System_Threading",
+    "Win32_System_IO",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
+tray-icon = "0.17"
+winit = "0.30"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

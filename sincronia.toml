@@ -1,0 +1,308 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Sincronia — Archivo de configuración de ejemplo
+# Motor de respaldo NAS de alto rendimiento para Windows 11
+# ═══════════════════════════════════════════════════════════════════════
+#
+# Copie este archivo como "sincronia.toml" y ajuste los valores.
+# Todos los parámetros tienen nombres largos y descriptivos.
+# Los valores mostrados son los recomendados por defecto.
+
+# ─── General ──────────────────────────────────────────────────────────
+
+[general]
+# Nombre visible de la aplicación (mostrado en bandeja del sistema)
+application_name = "Sincronia — Respaldo NAS"
+
+# Modo de ejecución:
+#   "backup_append_only"       → respalda archivos, conserva origen, crea versiones si hay cambios
+#   "move_after_verified_copy" → copia, verifica hash, elimina origen tras verificación exitosa
+run_mode = "backup_append_only"
+
+# Idioma para mensajes (reservado para futuro uso)
+language = "es-ES"
+
+# ─── Origen ───────────────────────────────────────────────────────────
+
+[source]
+# Ruta del directorio origen que se monitoriza continuamente.
+# Todos los archivos estables dentro de esta carpeta serán respaldados al NAS.
+source_directory_path = "C:\\ColaEntrada"
+
+# Segundos que un archivo debe permanecer sin cambios de tamaño ni fecha
+# de modificación para considerarse estable y listo para copia.
+# Un valor alto evita copiar archivos que aún están siendo escritos.
+minimum_file_stable_seconds = 60
+
+# Intervalo de escaneo en segundos cuando no se detectan cambios nuevos.
+scan_interval_seconds_when_no_changes = 15
+
+# Intervalo de escaneo en segundos después de detectar cambios.
+# Un valor bajo permite reaccionar rápido a nuevos archivos.
+scan_interval_seconds_after_changes = 10
+
+# ─── NAS ──────────────────────────────────────────────────────────────
+
+[nas]
+# Letra de unidad obligatoria para el flujo de trabajo.
+# El programa valida que esta unidad esté correctamente mapeada al NAS.
+required_drive_letter = "R:"
+
+# Ruta UNC primaria del NAS usando nombre de host (recomendado para Kerberos).
+primary_unc_path = "\\\\RAW-NAS\\Repositorio"
+
+# Ruta UNC alternativa usando IP directa (solo si allow_ip_fallback = true).
+# Kerberos no funciona con IP; solo usar si Kerberos no es posible.
+fallback_unc_path_by_ip = "\\\\10.71.11.41\\Repositorio"
+
+# Permitir usar la IP como fallback si el nombre de host falla.
+# Deshabilitado por defecto porque Kerberos requiere nombre de host.
+allow_ip_fallback = false
+
+# Permitir desmontar y remontar R: si apunta a otro recurso.
+# Deshabilitado por defecto para seguridad. Si R: apunta a otro sitio,
+# el programa reportará error en lugar de remapear automáticamente.
+allow_automatic_remap_if_drive_points_elsewhere = false
+
+# Usar la API nativa de Windows (WNetAddConnection3) como vía principal
+# para montar la unidad de red. Más seguro que net use.
+prefer_windows_wnet_api = true
+
+# Permitir usar "net use" como fallback si la API WNet falla.
+allow_net_use_fallback = true
+
+# Número máximo de veces que se solicitan credenciales al usuario.
+# Si se agotan los intentos, el programa pasa a estado de error.
+maximum_credential_prompt_attempts = 3
+
+# ─── Motor de Copia ──────────────────────────────────────────────────
+
+[copy_engine]
+# Número de workers (hilos) de copia concurrentes.
+# 8 es un buen equilibrio para carga mixta sobre 10 GbE.
+worker_count = 8
+
+# Número máximo de workers que se pueden usar.
+# El planificador adaptativo no superará este límite.
+maximum_worker_count = 16
+
+# Tamaño del buffer de copia por cada worker, en MiB.
+# 16 MiB es adecuado para archivos grandes sobre NVMe → SMB.
+# Valores más altos consumen más RAM (workers × buffer).
+copy_buffer_size_mib_per_worker = 16
+
+# Umbral en MiB para clasificar un archivo como "grande".
+# Los archivos grandes reciben tratamiento especial: menos workers
+# concurrentes para no saturar la conexión SMB.
+large_file_threshold_mib = 1024
+
+# Activar planificador adaptativo que ajusta concurrencia según tamaño.
+use_adaptive_scheduler = true
+
+# Usar extensión temporal en destino durante la copia.
+# El archivo se renombra al nombre final solo tras verificación exitosa.
+use_temporary_destination_extension = true
+
+# Extensión temporal usada durante la copia.
+temporary_destination_extension = ".partial"
+
+# Modo append-only estricto: nunca sobrescribir archivos en destino.
+strict_append_only = true
+
+# Eliminar archivo origen después de copia verificada.
+# Solo se usa si run_mode = "move_after_verified_copy".
+# PELIGROSO: el archivo origen se borra permanentemente.
+delete_source_after_verified_copy = false
+
+# Crear la jerarquía de carpetas en destino incluso si están vacías.
+preserve_empty_directory_hierarchy = true
+
+# Eliminar directorios vacíos del origen tras procesar todos sus archivos.
+remove_empty_source_directories_after_successful_processing = true
+
+# Ignorar enlaces simbólicos durante el escaneo.
+ignore_symbolic_links = true
+
+# Ignorar junctions de Windows durante el escaneo.
+ignore_junctions = true
+
+# ─── Verificación ────────────────────────────────────────────────────
+
+[verification]
+# Modo de verificación post-copia:
+#   "full_hash" → calcula hash completo de origen y destino, compara
+#   "none"      → sin verificación (no recomendado para producción)
+#
+# NOTA: El hash completo implica leer origen + destino íntegros.
+# Para un archivo de 10 GB, son 20 GB de lectura adicional.
+# Esto reduce el throughput efectivo pero garantiza integridad.
+verification_mode = "full_hash"
+
+# Algoritmo de hash principal. BLAKE3 es ~3-5x más rápido que SHA-256
+# y usa SIMD automáticamente (AVX-512 en i9 modernos).
+hash_algorithm = "blake3"
+
+# Algoritmo alternativo por si BLAKE3 fallase.
+fallback_hash_algorithm = "sha256"
+
+# Solo marcar el archivo como exitoso si el hash de destino coincide
+# con el hash de origen. Impide declarar éxito sin verificación.
+delete_or_mark_success_only_after_hash_match = true
+
+# ─── Metadatos ────────────────────────────────────────────────────────
+
+[metadata]
+# Preservar atributos del archivo (readonly, hidden, system, archive).
+preserve_file_attributes = true
+
+# Preservar la fecha de creación original del archivo.
+preserve_creation_time = true
+
+# Preservar la fecha de última escritura (modificación).
+preserve_last_write_time = true
+
+# Preservar la fecha de último acceso.
+preserve_last_access_time = true
+
+# Preservar timestamps de directorios (generalmente innecesario).
+preserve_directory_timestamps = false
+
+# Las siguientes opciones NO están implementadas en v1.
+# Se reservan para versiones futuras.
+preserve_acl = false
+preserve_owner = false
+preserve_audit = false
+
+# ─── Conflictos ───────────────────────────────────────────────────────
+
+[conflicts]
+# Acción cuando el archivo de destino ya existe:
+#   "hash_compare"   → comparar hash para decidir
+#   "skip"           → saltar el archivo
+#   "always_version" → crear siempre copia versionada
+if_destination_file_exists = "hash_compare"
+
+# Si el hash es igual (archivo idéntico ya existe en destino):
+#   "mark_as_already_backed_up" → registrar y continuar
+#   "skip"                      → ignorar silenciosamente
+if_hash_is_equal = "mark_as_already_backed_up"
+
+# Si el hash es diferente (archivo con mismo nombre pero contenido distinto):
+#   "create_versioned_copy"        → crear copia con sufijo de timestamp
+#   "move_to_conflict_directory"   → mover a carpeta de conflictos
+if_hash_is_different = "create_versioned_copy"
+
+# Estrategia de naming para copias versionadas:
+#   "timestamp_suffix" → archivo_20260512_220300.ext
+#   "numeric_suffix"   → archivo_001.ext
+versioned_copy_naming_strategy = "timestamp_suffix"
+
+# Nombre del subdirectorio de conflictos dentro del destino.
+conflict_directory_name = "_conflicts"
+
+# Registrar cada evento de conflicto en el log.
+write_conflict_event_to_log = true
+
+# ─── Exclusiones ──────────────────────────────────────────────────────
+
+[exclusions]
+# Nombres de directorio a excluir completamente del escaneo.
+# Se compara por nombre exacto (case-insensitive en Windows).
+excluded_directory_names = [
+    ".stfolder",
+    ".stversions",
+    "$RECYCLE.BIN",
+    "System Volume Information",
+    ".Trashes",
+    ".Spotlight-V100",
+    ".fseventsd",
+]
+
+# Patrones de archivo a excluir (formato glob).
+# Se aplican al nombre del archivo, no a la ruta completa.
+excluded_file_patterns = [
+    "*.tmp",
+    "~*.*",
+    "Thumbs.db",
+    ".DS_Store",
+    "desktop.ini",
+    "*.ffs_lock",
+    "*.ffs_db",
+    "*.partial",
+    "*.download",
+    "*.crdownload",
+    "*.lock",
+    "*.lck",
+]
+
+# ─── Política de Reintentos ──────────────────────────────────────────
+
+[retry_policy]
+# Número de reintentos por archivo antes de marcarlo como fallido.
+retries_per_file = 3
+
+# Secuencia de delays entre reintentos (en segundos).
+# El primer reintento espera 2s, el segundo 5s, el tercero 15s.
+retry_delay_seconds_sequence = [2, 5, 15]
+
+# Delay en segundos antes de reintentar cuando el NAS es inaccesible.
+nas_retry_delay_seconds = 60
+
+# Delay extendido en segundos cuando hay errores persistentes.
+persistent_error_delay_seconds = 300
+
+# Continuar procesando otros archivos si uno individual falla.
+continue_on_file_error = true
+
+# Número máximo de errores consecutivos antes de activar pausa extendida.
+maximum_consecutive_errors_before_extended_pause = 5
+
+# ─── Logging ──────────────────────────────────────────────────────────
+
+[logging]
+# Ruta del archivo de log legible por humanos (.log).
+# Se rota diariamente con el sufijo de fecha.
+human_log_file_path = "C:\\Users\\thebe\\Documents\\Sincronia\\Logs\\sincronia.log"
+
+# Ruta del archivo CSV con métricas por archivo.
+metrics_csv_file_path = "C:\\Users\\thebe\\Documents\\Sincronia\\Logs\\sincronia-metrics.csv"
+
+# Ruta del archivo JSON Lines con eventos estructurados.
+events_jsonl_file_path = "C:\\Users\\thebe\\Documents\\Sincronia\\Logs\\sincronia-events.jsonl"
+
+# Tamaño máximo del archivo de log en MiB antes de rotar.
+maximum_log_file_size_mib = 50
+
+# Número de archivos de log rotados a mantener.
+log_rotation_keep_file_count = 10
+
+# Generar un resumen diario al final del día.
+daily_summary_enabled = true
+
+# ─── Tarea Programada ────────────────────────────────────────────────
+
+[scheduled_task]
+# Crear una tarea programada de Windows para iniciar automáticamente.
+create_scheduled_task = true
+
+# Nombre visible de la tarea en el Programador de tareas.
+scheduled_task_name = "Sincronia NAS Backup"
+
+# Ejecutar solo cuando el usuario haya iniciado sesión.
+# Si es false, puede ejecutar en segundo plano pero NO podrá
+# solicitar credenciales interactivamente.
+run_only_when_user_is_logged_on = true
+
+# Ejecutar con privilegios elevados (administrador).
+# No necesario para operación normal. Solo activar si hay
+# problemas de permisos en rutas especiales.
+run_with_highest_privileges = false
+
+# Iniciar la tarea cuando el usuario inicia sesión.
+start_at_user_logon = true
+
+# Retraso en segundos después del inicio de sesión.
+# Permite que el sistema arranque completamente antes de iniciar.
+delay_after_logon_seconds = 30
+
+# Impedir que se ejecuten múltiples instancias simultáneas.
+prevent_parallel_instances = true
