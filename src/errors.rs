@@ -162,16 +162,10 @@ pub enum GlobalState {
     LoadingConfiguration,
     /// Validando configuración
     ValidatingConfiguration,
-    /// Comprobando mapeo de NAS
-    CheckingNasMapping,
-    /// Esperando credenciales del usuario
-    WaitingForCredentials,
-    /// NAS disponible y validado
-    NasAvailable,
     /// Escaneando directorio origen
     Scanning,
-    /// Copiando archivos
-    Copying,
+    /// Copiando archivos (detalle del par actual)
+    Copying(String),
     /// Inactivo, esperando cambios
     Idle,
     /// Pausado por el usuario
@@ -190,12 +184,10 @@ impl GlobalState {
     /// Color del icono de bandeja para este estado
     pub fn tray_color(&self) -> TrayColor {
         match self {
-            Self::NasAvailable | Self::Scanning | Self::Copying | Self::Idle => TrayColor::Green,
+            Self::Scanning | Self::Copying(_) | Self::Idle => TrayColor::Green,
             Self::Starting
             | Self::LoadingConfiguration
             | Self::ValidatingConfiguration
-            | Self::CheckingNasMapping
-            | Self::WaitingForCredentials
             | Self::Paused => TrayColor::Yellow,
             Self::ErrorTransient
             | Self::ErrorPersistent
@@ -211,11 +203,10 @@ impl std::fmt::Display for GlobalState {
             Self::Starting => "Iniciando",
             Self::LoadingConfiguration => "Cargando configuración",
             Self::ValidatingConfiguration => "Validando configuración",
-            Self::CheckingNasMapping => "Comprobando NAS",
-            Self::WaitingForCredentials => "Esperando credenciales",
-            Self::NasAvailable => "NAS disponible",
             Self::Scanning => "Escaneando",
-            Self::Copying => "Copiando",
+            Self::Copying(detail) => {
+                return write!(f, "Copiando: {}", detail);
+            }
             Self::Idle => "Inactivo",
             Self::Paused => "Pausado",
             Self::ErrorTransient => "Error transitorio",

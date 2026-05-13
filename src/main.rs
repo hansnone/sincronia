@@ -12,7 +12,6 @@
 mod config;
 mod conflict;
 mod copy_engine;
-mod credentials;
 mod errors;
 mod exclusions;
 mod hasher;
@@ -28,7 +27,6 @@ mod stability;
 mod stats;
 mod tray;
 mod verifier;
-mod windows_nas;
 
 use crate::config::SincroniaConfig;
 use crate::orchestrator::{Orchestrator, OrchestratorMessage, TrayCommand};
@@ -42,7 +40,7 @@ fn main() {
 
     if args.iter().any(|a| a == "--version" || a == "-v") {
         println!("Sincronia v{}", env!("CARGO_PKG_VERSION"));
-        println!("Motor de respaldo NAS de alto rendimiento para Windows 11");
+        println!("Motor de sincronización multipar de alto rendimiento para Windows 11");
         return;
     }
 
@@ -131,10 +129,18 @@ fn main() {
     // ── Iniciar sistema ──
     println!("═══════════════════════════════════════════════════");
     println!("  Sincronia v{}", env!("CARGO_PKG_VERSION"));
-    println!("  Motor de respaldo NAS de alto rendimiento");
+    println!("  Motor de sincronización multipar");
     println!("  Config: {}", config_path.display());
-    println!("  Origen: {}", config.source.source_directory_path.display());
-    println!("  NAS: {} → {}", config.nas.required_drive_letter, config.nas.primary_unc_path);
+    for (i, pair) in config.sync_pairs.iter().enumerate() {
+        println!(
+            "  Par {}: {} [{}] → {} [{}]",
+            i + 1,
+            pair.source_path.display(),
+            pair.source_virtual_drive_letter,
+            pair.target_path.display(),
+            pair.target_virtual_drive_letter
+        );
+    }
     println!("  Workers: {} (máx: {})", config.copy_engine.worker_count, config.copy_engine.maximum_worker_count);
     println!("  Buffer: {} MiB/worker", config.copy_engine.copy_buffer_size_mib_per_worker);
     println!("═══════════════════════════════════════════════════");
@@ -176,11 +182,28 @@ fn main() {
             .unwrap_or(Path::new("."))
             .to_path_buf();
 
+        let sync_pair_menu_lines: Vec<String> = config
+            .sync_pairs
+            .iter()
+            .enumerate()
+            .map(|(i, p)| {
+                format!(
+                    "Par {} — {} [{}] → {} [{}]",
+                    i + 1,
+                    p.source_path.display(),
+                    p.source_virtual_drive_letter,
+                    p.target_path.display(),
+                    p.target_virtual_drive_letter
+                )
+            })
+            .collect();
+
         let tray_config = TrayConfig {
             application_name: config.general.application_name.clone(),
             log_directory: log_dir,
             config_file_path: config_path.clone(),
             metrics_csv_path: config.logging.metrics_csv_file_path.clone(),
+            sync_pair_menu_lines,
         };
 
         let global_state = std::sync::Arc::new(parking_lot::RwLock::new(
@@ -199,7 +222,7 @@ fn main() {
 
 fn print_help() {
     println!(
-        r#"Sincronia v{version} — Motor de respaldo NAS de alto rendimiento
+        r#"Sincronia v{version} — Sincronización multipar (Windows)
 
 USO:
     sincronia [OPCIONES]
@@ -229,8 +252,7 @@ EJEMPLOS:
 
 NOTAS:
     - El programa NO requiere privilegios de administrador.
-    - Si el NAS requiere credenciales, se solicitarán interactivamente.
-    - Las credenciales NUNCA se almacenan en disco.
+    - Configure [[sync_pairs]] con rutas reales y letras virtuales (DefineDosDeviceW).
     - Para crear la tarea programada, ejecute una vez con --create-scheduled-task.
     - Los logs se generan en la ruta configurada en el archivo TOML.
 "#,

@@ -11,7 +11,7 @@
 
 [general]
 # Nombre visible de la aplicación (mostrado en bandeja del sistema)
-application_name = "Sincronia — Respaldo NAS"
+application_name = "Sincronia Multipar"
 
 # Modo de ejecución:
 #   "backup_append_only"       → respalda archivos, conserva origen, crea versiones si hay cambios
@@ -21,58 +21,20 @@ run_mode = "backup_append_only"
 # Idioma para mensajes (reservado para futuro uso)
 language = "es-ES"
 
-# ─── Origen ───────────────────────────────────────────────────────────
+# ─── Escaneo (entre vueltas de todos los pares) ───────────────────────
 
-[source]
-# Ruta del directorio origen que se monitoriza continuamente.
-# Todos los archivos estables dentro de esta carpeta serán respaldados al NAS.
-source_directory_path = "C:\\Users\\locadmin\\Desktop\\prueba-sincronizacion-carpetas\\carpeta-a"
-
-# Segundos que un archivo debe permanecer sin cambios de tamaño ni fecha
-# de modificación para considerarse estable y listo para copia.
-# Un valor alto evita copiar archivos que aún están siendo escritos.
-minimum_file_stable_seconds = 60
-
-# Intervalo de escaneo en segundos cuando no se detectan cambios nuevos.
+[scan]
 scan_interval_seconds_when_no_changes = 15
-
-# Intervalo de escaneo en segundos después de detectar cambios.
-# Un valor bajo permite reaccionar rápido a nuevos archivos.
 scan_interval_seconds_after_changes = 10
 
-# ─── NAS ──────────────────────────────────────────────────────────────
+# ─── Pares de sincronización ─────────────────────────────────────────
 
-[nas]
-# Letra de unidad obligatoria para el flujo de trabajo.
-# El programa valida que esta unidad esté correctamente mapeada al NAS.
-required_drive_letter = "R:"
-
-# Ruta UNC primaria del NAS usando nombre de host (recomendado para Kerberos).
-primary_unc_path = "\\\\10.71.11.41\\RAW_NAS\\SW\\Destino"
-
-# Ruta UNC alternativa usando IP directa (solo si allow_ip_fallback = true).
-# Kerberos no funciona con IP; solo usar si Kerberos no es posible.
-fallback_unc_path_by_ip = "\\\\10.71.11.41\\RAW_NAS\\SW\\Destino"
-
-# Permitir usar la IP como fallback si el nombre de host falla.
-# Deshabilitado por defecto porque Kerberos requiere nombre de host.
-allow_ip_fallback = true
-
-# Permitir desmontar y remontar R: si apunta a otro recurso.
-# Deshabilitado por defecto para seguridad. Si R: apunta a otro sitio,
-# el programa reportará error en lugar de remapear automáticamente.
-allow_automatic_remap_if_drive_points_elsewhere = false
-
-# Usar la API nativa de Windows (WNetAddConnection3) como vía principal
-# para montar la unidad de red. Más seguro que net use.
-prefer_windows_wnet_api = true
-
-# Permitir usar "net use" como fallback si la API WNet falla.
-allow_net_use_fallback = true
-
-# Número máximo de veces que se solicitan credenciales al usuario.
-# Si se agotan los intentos, el programa pasa a estado de error.
-maximum_credential_prompt_attempts = 3
+[[sync_pairs]]
+source_path = "C:\\Users\\locadmin\\Desktop\\prueba-sincronizacion-carpetas\\carpeta-a"
+source_virtual_drive_letter = "X:"
+target_path = "C:\\Users\\locadmin\\Desktop\\prueba-sincronizacion-carpetas\\carpeta-destino"
+target_virtual_drive_letter = "Y:"
+minimum_file_stable_seconds = 60
 
 # ─── Motor de Copia ──────────────────────────────────────────────────
 
@@ -151,8 +113,10 @@ delete_or_mark_success_only_after_hash_match = true
 # ─── Metadatos ────────────────────────────────────────────────────────
 
 [metadata]
-# Preservar atributos del archivo (readonly, hidden, system, archive).
-preserve_file_attributes = true
+# false por defecto y recomendado para NAS SMB en macOS/APFS: copiar atributos NTFS
+# (p. ej. solo lectura) al destino suele bloquear el archivo en el servidor e impedir
+# renombrar el temporal `.partial` al nombre final.
+preserve_file_attributes = false
 
 # Preservar la fecha de creación original del archivo.
 preserve_creation_time = true
@@ -224,6 +188,7 @@ excluded_file_patterns = [
     "~*.*",
     "Thumbs.db",
     ".DS_Store",
+    "._*",
     "desktop.ini",
     "*.ffs_lock",
     "*.ffs_db",
@@ -244,7 +209,7 @@ retries_per_file = 3
 # El primer reintento espera 2s, el segundo 5s, el tercero 15s.
 retry_delay_seconds_sequence = [2, 5, 15]
 
-# Delay en segundos antes de reintentar cuando el NAS es inaccesible.
+# Delay en segundos antes de reintentar un ciclo cuando hubo fallo de montaje DOS u otro bloqueo.
 nas_retry_delay_seconds = 60
 
 # Delay extendido en segundos cuando hay errores persistentes.

@@ -17,8 +17,9 @@ use std::path::{Path, PathBuf};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SincroniaConfig {
     pub general: GeneralConfig,
-    pub source: SourceConfig,
-    pub nas: NasConfig,
+    #[serde(default)]
+    pub scan: ScanTimingConfig,
+    pub sync_pairs: Vec<SyncPairConfig>,
     pub copy_engine: CopyEngineConfig,
     pub verification: VerificationConfig,
     pub metadata: MetadataConfig,
@@ -48,55 +49,45 @@ pub struct GeneralConfig {
     pub language: String,
 }
 
+/// Intervalos entre vueltas completas de sincronización (todos los pares).
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SourceConfig {
-    /// Ruta del directorio origen a monitorizar
-    pub source_directory_path: PathBuf,
-
-    /// Segundos que un archivo debe permanecer sin cambios para considerarse estable
-    #[serde(default = "default_stable_seconds")]
-    pub minimum_file_stable_seconds: u64,
-
-    /// Intervalo de escaneo en segundos cuando no hay cambios
+pub struct ScanTimingConfig {
+    /// Intervalo de escaneo en segundos cuando no hubo trabajo estable en la vuelta
     #[serde(default = "default_scan_no_changes")]
     pub scan_interval_seconds_when_no_changes: u64,
 
-    /// Intervalo de escaneo en segundos después de detectar cambios
+    /// Intervalo en segundos tras una vuelta donde al menos un par tuvo archivos estables
     #[serde(default = "default_scan_after_changes")]
     pub scan_interval_seconds_after_changes: u64,
 }
 
+impl Default for ScanTimingConfig {
+    fn default() -> Self {
+        Self {
+            scan_interval_seconds_when_no_changes: default_scan_no_changes(),
+            scan_interval_seconds_after_changes: default_scan_after_changes(),
+        }
+    }
+}
+
+/// Un par origen/destino con letras DOS virtuales para la sesión de copia.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NasConfig {
-    /// Letra de unidad obligatoria (ej: "R:")
-    pub required_drive_letter: String,
+pub struct SyncPairConfig {
+    /// Ruta real del directorio origen (DefineDosDevice apunta la letra virtual aquí)
+    pub source_path: PathBuf,
 
-    /// Ruta UNC primaria del NAS (ej: "\\\\RAW-NAS\\Repositorio")
-    pub primary_unc_path: String,
+    /// Letra virtual de origen (ej: "X:")
+    pub source_virtual_drive_letter: String,
 
-    /// Ruta UNC de fallback por IP (ej: "\\\\10.71.11.41\\Repositorio")
-    #[serde(default)]
-    pub fallback_unc_path_by_ip: String,
+    /// Ruta real del directorio destino
+    pub target_path: PathBuf,
 
-    /// Permitir fallback por IP (deshabilitado por defecto para priorizar Kerberos)
-    #[serde(default)]
-    pub allow_ip_fallback: bool,
+    /// Letra virtual de destino (ej: "Y:")
+    pub target_virtual_drive_letter: String,
 
-    /// Permitir remapeo automático si R: apunta a otro recurso
-    #[serde(default)]
-    pub allow_automatic_remap_if_drive_points_elsewhere: bool,
-
-    /// Preferir API WNet de Windows como vía principal
-    #[serde(default = "default_true")]
-    pub prefer_windows_wnet_api: bool,
-
-    /// Permitir fallback mediante net use si WNet falla
-    #[serde(default = "default_true")]
-    pub allow_net_use_fallback: bool,
-
-    /// Número máximo de intentos para solicitar credenciales
-    #[serde(default = "default_max_cred_attempts")]
-    pub maximum_credential_prompt_attempts: u32,
+    /// Segundos que un archivo debe permanecer sin cambios para considerarse estable
+    #[serde(default = "default_stable_seconds")]
+    pub minimum_file_stable_seconds: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -175,8 +166,10 @@ pub struct VerificationConfig {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MetadataConfig {
-    /// Preservar atributos del archivo (readonly, hidden, etc.)
-    #[serde(default = "default_true")]
+    /// Preservar atributos del archivo (readonly, hidden, etc.) en el destino.
+    /// Por defecto **false**: en NAS SMB sobre macOS/APFS, marcar solo lectura u otros
+    /// flags NTFS suele provocar bloqueos en el servidor y fallos al renombrar `.partial`.
+    #[serde(default = "default_false")]
     pub preserve_file_attributes: bool,
 
     /// Preservar fecha de creación
@@ -350,8 +343,8 @@ fn default_scan_after_changes() -> u64 {
 fn default_true() -> bool {
     true
 }
-fn default_max_cred_attempts() -> u32 {
-    3
+fn default_false() -> bool {
+    false
 }
 fn default_worker_count() -> usize {
     8
@@ -391,6 +384,7 @@ fn default_excluded_patterns() -> Vec<String> {
         "~*.*".into(),
         "Thumbs.db".into(),
         ".DS_Store".into(),
+        "._*".into(),
         "desktop.ini".into(),
         "*.ffs_lock".into(),
         "*.ffs_db".into(),
@@ -433,14 +427,49 @@ fn default_logon_delay() -> u64 {
 // Carga y validación
 // ─────────────────────────────────────────────
 
+fn is_valid_dos_drive_letter(s: &str) -> bool {
+    let mut chars = s.chars();
+    match (chars.next(), chars.next(), chars.next()) {
+        (Some(c), Some(':'), None) => c.is_ascii_alphabetic(),
+        _ => false,
+    }
+}
+
+fn drive_letter_upper(letter: &str) -> Option<char> {
+    let mut ch = letter.chars();
+    match (ch.next(), ch.next(), ch.next()) {
+        (Some(c), Some(':'), None) if c.is_ascii_alphabetic() => Some(c.to_ascii_uppercase()),
+        _ => None,
+    }
+}
+
 impl SincroniaConfig {
     /// Carga la configuración desde un archivo TOML
     pub fn load_from_file(path: &Path) -> anyhow::Result<Self> {
         let content = std::fs::read_to_string(path)
             .map_err(|e| anyhow::anyhow!("No se pudo leer el archivo de configuración '{}': {}", path.display(), e))?;
 
-        let config: SincroniaConfig = toml::from_str(&content)
-            .map_err(|e| anyhow::anyhow!("Error al parsear el archivo TOML '{}': {}", path.display(), e))?;
+        let config: SincroniaConfig = toml::from_str(&content).map_err(|e| {
+            let err_str = e.to_string();
+            let mut msg = format!(
+                "Error al parsear el archivo TOML '{}': {}",
+                path.display(),
+                e
+            );
+            if err_str.contains("unicode")
+                || err_str.contains("hex code")
+                || err_str.contains("escape")
+            {
+                msg.push_str(
+                    "\n\nSugerencia (rutas Windows en TOML): dentro de comillas dobles (\"...\"), \
+                     la secuencia \\U inicia un carácter Unicode de 8 dígitos hexadecimales, \
+                     por eso una ruta como \"C:\\Users\\...\" falla en \\Users. \
+                     Use barras dobles: \"C:\\\\Users\\\\...\" o una cadena literal entre comillas simples: \
+                     'C:\\Users\\...'",
+                );
+            }
+            anyhow::anyhow!("{}", msg)
+        })?;
 
         config.validate()?;
         Ok(config)
@@ -448,29 +477,70 @@ impl SincroniaConfig {
 
     /// Valida la configuración cargada
     pub fn validate(&self) -> anyhow::Result<()> {
-        // Validar que el directorio origen existe
-        if !self.source.source_directory_path.exists() {
-            anyhow::bail!(
-                "El directorio origen no existe: {}",
-                self.source.source_directory_path.display()
-            );
+        if self.sync_pairs.is_empty() {
+            anyhow::bail!("sync_pairs no puede estar vacío: defina al menos un [[sync_pairs]]");
         }
 
-        // Validar letra de unidad
-        let letter = &self.nas.required_drive_letter;
-        if letter.len() != 2 || !letter.ends_with(':') || !letter.chars().next().unwrap_or(' ').is_ascii_alphabetic() {
-            anyhow::bail!(
-                "Letra de unidad inválida: '{}'. Formato esperado: 'R:'",
-                letter
-            );
-        }
+        let mut used_letters = std::collections::HashSet::<char>::new();
 
-        // Validar UNC path
-        if !self.nas.primary_unc_path.starts_with("\\\\") {
-            anyhow::bail!(
-                "Ruta UNC primaria inválida: '{}'. Debe comenzar con \\\\",
-                self.nas.primary_unc_path
-            );
+        for (i, pair) in self.sync_pairs.iter().enumerate() {
+            if !pair.source_path.exists() {
+                anyhow::bail!(
+                    "sync_pairs[{}]: el directorio origen no existe: {}",
+                    i,
+                    pair.source_path.display()
+                );
+            }
+
+            if !pair.target_path.exists() {
+                if let Some(parent) = pair.target_path.parent() {
+                    if !parent.as_os_str().is_empty() && !parent.exists() {
+                        anyhow::bail!(
+                            "sync_pairs[{}]: el destino no existe y el directorio padre tampoco: {}",
+                            i,
+                            pair.target_path.display()
+                        );
+                    }
+                }
+            }
+
+            for (label, letter) in [
+                ("source_virtual_drive_letter", pair.source_virtual_drive_letter.as_str()),
+                ("target_virtual_drive_letter", pair.target_virtual_drive_letter.as_str()),
+            ] {
+                if !is_valid_dos_drive_letter(letter) {
+                    anyhow::bail!(
+                        "sync_pairs[{}]: {} inválida '{}'. Formato esperado: 'X:'",
+                        i,
+                        label,
+                        letter
+                    );
+                }
+            }
+
+            let src_u = drive_letter_upper(&pair.source_virtual_drive_letter)
+                .ok_or_else(|| anyhow::anyhow!("sync_pairs[{}]: letra de origen inválida", i))?;
+            let tgt_u = drive_letter_upper(&pair.target_virtual_drive_letter)
+                .ok_or_else(|| anyhow::anyhow!("sync_pairs[{}]: letra de destino inválida", i))?;
+
+            if src_u == tgt_u {
+                anyhow::bail!(
+                    "sync_pairs[{}]: la letra virtual de origen y destino deben ser distintas ('{}')",
+                    i,
+                    pair.source_virtual_drive_letter
+                );
+            }
+
+            for (which, c) in [("origen", src_u), ("destino", tgt_u)] {
+                if !used_letters.insert(c) {
+                    anyhow::bail!(
+                        "sync_pairs[{}]: la letra '{}' ({}) ya está en uso en otro par",
+                        i,
+                        c,
+                        which
+                    );
+                }
+            }
         }
 
         // Validar worker count
@@ -537,13 +607,16 @@ application_name = "Test App"
 run_mode = "backup_append_only"
 language = "es-ES"
 
-[source]
-source_directory_path = "."
-minimum_file_stable_seconds = 30
+[scan]
+scan_interval_seconds_when_no_changes = 15
+scan_interval_seconds_after_changes = 10
 
-[nas]
-required_drive_letter = "R:"
-primary_unc_path = "\\\\RAW-NAS\\Repositorio"
+[[sync_pairs]]
+source_path = "."
+source_virtual_drive_letter = "X:"
+target_path = "."
+target_virtual_drive_letter = "Y:"
+minimum_file_stable_seconds = 30
 
 [copy_engine]
 worker_count = 4
@@ -553,7 +626,6 @@ verification_mode = "full_hash"
 hash_algorithm = "blake3"
 
 [metadata]
-preserve_file_attributes = true
 
 [conflicts]
 if_destination_file_exists = "hash_compare"
@@ -577,7 +649,10 @@ create_scheduled_task = false
         let config: SincroniaConfig = toml::from_str(toml_str).unwrap();
         assert_eq!(config.general.application_name, "Test App");
         assert_eq!(config.copy_engine.worker_count, 4);
-        assert_eq!(config.nas.required_drive_letter, "R:");
+        assert_eq!(config.sync_pairs.len(), 1);
+        assert_eq!(config.sync_pairs[0].source_virtual_drive_letter, "X:");
+        assert_eq!(config.sync_pairs[0].target_virtual_drive_letter, "Y:");
+        assert!(!config.metadata.preserve_file_attributes);
     }
 
     #[test]
@@ -588,12 +663,13 @@ application_name = "Test"
 run_mode = "backup_append_only"
 language = "es-ES"
 
-[source]
-source_directory_path = "."
+[scan]
 
-[nas]
-required_drive_letter = "XYZ"
-primary_unc_path = "\\\\RAW-NAS\\Repositorio"
+[[sync_pairs]]
+source_path = "."
+source_virtual_drive_letter = "ZZ"
+target_path = "."
+target_virtual_drive_letter = "Y:"
 
 [copy_engine]
 

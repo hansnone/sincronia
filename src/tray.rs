@@ -20,14 +20,12 @@ use winit::application::ApplicationHandler;
 #[cfg(windows)]
 use winit::event::WindowEvent;
 #[cfg(windows)]
-use winit::event_loop::{ActiveEventLoop, EventLoop, EventLoopProxy};
+use winit::event_loop::{ActiveEventLoop, EventLoop};
 #[cfg(windows)]
 use winit::window::WindowId;
 
 /// IDs de menú
 const MENU_STATUS: &str = "status";
-const MENU_MOUNT_NAS: &str = "mount_nas";
-const MENU_RETRY: &str = "retry";
 const MENU_PAUSE: &str = "pause";
 const MENU_RESUME: &str = "resume";
 const MENU_STOP: &str = "stop";
@@ -49,6 +47,8 @@ pub struct TrayConfig {
     pub log_directory: std::path::PathBuf,
     pub config_file_path: std::path::PathBuf,
     pub metrics_csv_path: std::path::PathBuf,
+    /// Líneas informativas por par (menú deshabilitado)
+    pub sync_pair_menu_lines: Vec<String>,
 }
 
 /// Ejecuta el loop del tray icon (DEBE ejecutarse en el thread principal)
@@ -138,9 +138,12 @@ impl ApplicationHandler<TrayEvent> for TrayApp {
         menu.append(&status_item).ok();
         menu.append(&PredefinedMenuItem::separator()).ok();
 
-        menu.append(&MenuItem::with_id(MENU_MOUNT_NAS, "Montar NAS", true, None)).ok();
-        menu.append(&MenuItem::with_id(MENU_RETRY, "Reintentar conexión", true, None)).ok();
+        for line in &self.tray_config.sync_pair_menu_lines {
+            menu.append(&MenuItem::new(line, false, None))
+                .ok();
+        }
         menu.append(&PredefinedMenuItem::separator()).ok();
+
         menu.append(&MenuItem::with_id(MENU_PAUSE, "Pausar", true, None)).ok();
         menu.append(&MenuItem::with_id(MENU_RESUME, "Reanudar", true, None)).ok();
         menu.append(&MenuItem::with_id(MENU_STOP, "Parar ordenadamente", true, None)).ok();
@@ -177,7 +180,8 @@ impl ApplicationHandler<TrayEvent> for TrayApp {
             TrayEvent::OrchestratorMessage(msg) => match msg {
                 OrchestratorMessage::StateChanged(state) => {
                     let color = state.tray_color();
-                    let label = format!("Estado: {}", state);
+                    let full_label = format!("Estado: {}", state);
+                    let label = truncate_menu_text(&full_label, 96);
 
                     if let Some(ref item) = self.menu_status_item {
                         item.set_text(&label);
@@ -186,11 +190,9 @@ impl ApplicationHandler<TrayEvent> for TrayApp {
                     if let Some(ref tray) = self.tray_icon {
                         let icon = create_colored_icon(color);
                         tray.set_icon(Some(icon)).ok();
-                        tray.set_tooltip(Some(&format!(
-                            "{} — {}",
-                            self.tray_config.application_name, state
-                        )))
-                        .ok();
+                        let tip = format!("{} — {}", self.tray_config.application_name, state);
+                        let tip = truncate_menu_text(&tip, 120);
+                        tray.set_tooltip(Some(&tip)).ok();
                     }
                 }
                 OrchestratorMessage::Notification { title, message } => {
@@ -212,12 +214,6 @@ impl ApplicationHandler<TrayEvent> for TrayApp {
             TrayEvent::MenuAction(id) => {
                 debug!("Acción de menú: {}", id);
                 match id.as_str() {
-                    MENU_MOUNT_NAS => {
-                        self.command_sender.send(TrayCommand::MountNas).ok();
-                    }
-                    MENU_RETRY => {
-                        self.command_sender.send(TrayCommand::RetryConnection).ok();
-                    }
                     MENU_PAUSE => {
                         self.command_sender.send(TrayCommand::Pause).ok();
                     }
@@ -254,6 +250,15 @@ impl ApplicationHandler<TrayEvent> for TrayApp {
     ) {
         // No hay ventana — solo tray
     }
+}
+
+#[cfg(windows)]
+fn truncate_menu_text(s: &str, max_chars: usize) -> String {
+    if s.chars().count() <= max_chars {
+        return s.to_string();
+    }
+    let truncated: String = s.chars().take(max_chars.saturating_sub(1)).collect();
+    format!("{}…", truncated)
 }
 
 /// Crea un icono de color sólido 16x16 RGBA para la bandeja

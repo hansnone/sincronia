@@ -1,10 +1,9 @@
 // sincronia/src/orchestrator.rs
 //
-// Máquina de estados global que coordina todo el ciclo:
-// NAS → Scan → Estabilidad → Planificación → Copia → Métricas → Espera
+// Máquina de estados global: montaje DOS por par → escaneo → estabilidad
+// → planificación → copia → desmontaje → siguiente par.
 
 use crate::config::SincroniaConfig;
-use crate::credentials;
 use crate::errors::GlobalState;
 use crate::exclusions::ExclusionFilter;
 use crate::logging::LogManager;
@@ -14,12 +13,87 @@ use crate::scheduler::{WorkerConfig, WorkerPool};
 use crate::shutdown::ShutdownSignal;
 use crate::stability::StabilityChecker;
 use crate::stats::StatsAggregator;
-use crate::windows_nas::{self, DriveValidation};
 use crossbeam_channel::Sender;
 use parking_lot::RwLock;
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tracing::{error, info, warn};
+
+#[cfg(windows)]
+use std::os::windows::ffi::OsStrExt;
+#[cfg(windows)]
+use std::ptr::null;
+
+#[cfg(windows)]
+const DDD_REMOVE_DEFINITION: u32 = 0x00000002;
+
+#[cfg(windows)]
+#[link(name = "kernel32")]
+unsafe extern "system" {
+    fn DefineDosDeviceW(
+        dwflags: u32,
+        lpdevicename: *const u16,
+        lptargetpath: *const u16,
+    ) -> i32;
+}
+
+/// Raíz de unidad virtual tipo `X:\` para escaneo y rutas absolutas coherentes.
+fn virtual_drive_root(letter: &str) -> PathBuf {
+    let l = letter.trim_end_matches(['\\', '/']);
+    PathBuf::from(format!("{}\\", l))
+}
+
+#[cfg(windows)]
+fn wide_device_name(device: &str) -> Vec<u16> {
+    device.encode_utf16().chain(std::iter::once(0)).collect()
+}
+
+#[cfg(windows)]
+fn wide_target_path(path: &Path) -> Vec<u16> {
+    path.as_os_str()
+        .encode_wide()
+        .chain(std::iter::once(0))
+        .collect()
+}
+
+#[cfg(windows)]
+fn define_dos_device_remove(device_name: &str) {
+    let dev = wide_device_name(device_name);
+    let rc = unsafe { DefineDosDeviceW(DDD_REMOVE_DEFINITION, dev.as_ptr(), null()) };
+    if rc == 0 {
+        warn!(
+            "DefineDosDeviceW(desmontar) {}: {}",
+            device_name,
+            std::io::Error::last_os_error()
+        );
+    }
+}
+
+#[cfg(windows)]
+fn define_dos_device_define(device_name: &str, target_path: &Path) -> Result<(), String> {
+    let dev = wide_device_name(device_name);
+    let tgt = wide_target_path(target_path);
+    let rc = unsafe { DefineDosDeviceW(0, dev.as_ptr(), tgt.as_ptr()) };
+    if rc == 0 {
+        Err(format!(
+            "DefineDosDeviceW(montar) {} → '{}': {}",
+            device_name,
+            target_path.display(),
+            std::io::Error::last_os_error()
+        ))
+    } else {
+        Ok(())
+    }
+}
+
+#[cfg(not(windows))]
+fn define_dos_device_remove(_device_name: &str) {}
+
+#[cfg(not(windows))]
+fn define_dos_device_define(_device_name: &str, _target_path: &Path) -> Result<(), String> {
+    Err("DefineDosDeviceW solo está disponible en Windows".into())
+}
 
 /// Mensajes del orquestador al tray
 #[derive(Debug, Clone)]
@@ -34,8 +108,6 @@ pub enum OrchestratorMessage {
 pub enum TrayCommand {
     Pause,
     Resume,
-    MountNas,
-    RetryConnection,
     Stop,
 }
 
@@ -95,12 +167,40 @@ impl Orchestrator {
         }
     }
 
+    fn unmount_pair_letters(&self, pair: &crate::config::SyncPairConfig) {
+        define_dos_device_remove(pair.source_virtual_drive_letter.trim_end_matches(['\\', '/']));
+        define_dos_device_remove(pair.target_virtual_drive_letter.trim_end_matches(['\\', '/']));
+    }
+
+    /// `true` si ambas letras quedaron montadas.
+    fn mount_pair(&self, pair: &crate::config::SyncPairConfig) -> bool {
+        let src_letter = pair
+            .source_virtual_drive_letter
+            .trim_end_matches(['\\', '/']);
+        let tgt_letter = pair
+            .target_virtual_drive_letter
+            .trim_end_matches(['\\', '/']);
+
+        define_dos_device_remove(src_letter);
+        define_dos_device_remove(tgt_letter);
+
+        if let Err(e) = define_dos_device_define(src_letter, &pair.source_path) {
+            error!("No se pudo montar origen virtual {}: {}", src_letter, e);
+            return false;
+        }
+        if let Err(e) = define_dos_device_define(tgt_letter, &pair.target_path) {
+            error!("No se pudo montar destino virtual {}: {}", tgt_letter, e);
+            define_dos_device_remove(src_letter);
+            return false;
+        }
+        true
+    }
+
     /// Ejecuta el loop principal del orquestador
     pub fn run(&mut self) {
         info!("═══ Sincronia Orchestrator iniciado ═══");
         self.set_state(GlobalState::LoadingConfiguration);
 
-        // Crear componentes
         let filter = ExclusionFilter::new(
             &self.config.exclusions.excluded_directory_names,
             &self.config.exclusions.excluded_file_patterns,
@@ -119,20 +219,24 @@ impl Orchestrator {
             }
         };
 
-        let mut stability = StabilityChecker::new(self.config.source.minimum_file_stable_seconds);
+        let mut stability_checkers: Vec<StabilityChecker> = self
+            .config
+            .sync_pairs
+            .iter()
+            .map(|p| StabilityChecker::new(p.minimum_file_stable_seconds))
+            .collect();
+
         let mut stats = StatsAggregator::new();
 
         self.set_state(GlobalState::ValidatingConfiguration);
 
-        // ── Loop principal ──
-        loop {
+        'global_loop: loop {
             if self.shutdown.is_shutdown_requested() {
                 self.set_state(GlobalState::Stopping);
                 info!("Parada ordenada solicitada — saliendo del loop principal");
                 break;
             }
 
-            // Procesar comandos del tray
             if let Some(ref rx) = self.command_receiver {
                 while let Ok(cmd) = rx.try_recv() {
                     match cmd {
@@ -142,323 +246,248 @@ impl Orchestrator {
                         }
                         TrayCommand::Resume => {
                             info!("Reanudado por el usuario");
-                            self.set_state(GlobalState::NasAvailable);
+                            self.set_state(GlobalState::Idle);
                         }
                         TrayCommand::Stop => {
                             info!("Parada solicitada desde bandeja");
                             self.shutdown.trigger();
                         }
-                        TrayCommand::MountNas | TrayCommand::RetryConnection => {
-                            info!("Reintento de conexión NAS solicitado");
-                            // Se intentará en la siguiente iteración del loop
-                        }
                     }
                 }
             }
 
-            // Si está pausado, esperar
             if *self.state.read() == GlobalState::Paused {
                 std::thread::sleep(Duration::from_secs(1));
                 continue;
             }
 
-            // 1. Validar NAS
-            self.set_state(GlobalState::CheckingNasMapping);
-            if !self.ensure_nas_available(&mut stats) {
-                let delay = self.config.retry_policy.nas_retry_delay_seconds;
-                warn!("NAS no disponible — esperando {}s", delay);
-                self.interruptible_sleep(Duration::from_secs(delay));
-                continue;
-            }
+            let mut had_stable_files_any_pair = false;
+            let mut extended_pause = false;
 
-            stats.set_nas_status("available");
-            self.set_state(GlobalState::NasAvailable);
-
-            // 2. Escanear directorio origen
-            self.set_state(GlobalState::Scanning);
-            let scan_result = scanner::scan_directory(
-                &self.config.source.source_directory_path,
-                &filter,
-                self.config.copy_engine.ignore_symbolic_links,
-                self.config.copy_engine.ignore_junctions,
-            );
-
-            let files_detected = scan_result.files.len() as u64;
-
-            if scan_result.files.is_empty() {
-                self.set_state(GlobalState::Idle);
-                let interval = self.config.source.scan_interval_seconds_when_no_changes;
-                self.interruptible_sleep(Duration::from_secs(interval));
-                continue;
-            }
-
-            // 3. Evaluar estabilidad
-            let (stable_files, unstable_files) = stability.evaluate(&scan_result.files);
-            let files_unstable = unstable_files.len() as u64;
-            stats.set_queue_depth(stable_files.len() as u64);
-
-            if stable_files.is_empty() {
-                self.set_state(GlobalState::Idle);
-                let interval = self.config.source.scan_interval_seconds_after_changes;
-                self.interruptible_sleep(Duration::from_secs(interval));
-                continue;
-            }
-
-            // 4. Planificar trabajos
-            let dest_base_path = std::path::Path::new(&self.config.nas.required_drive_letter);
-            let large_threshold_bytes =
-                self.config.copy_engine.large_file_threshold_mib * 1024 * 1024;
-
-            let jobs = planner::plan_copy_jobs(
-                &stable_files,
-                dest_base_path,
-                &self.config.copy_engine.temporary_destination_extension,
-                large_threshold_bytes,
-            );
-
-            // Crear directorios en destino
-            if self.config.copy_engine.preserve_empty_directory_hierarchy {
-                if let Err(e) = planner::ensure_destination_directories(
-                    &scan_result.directories,
-                    dest_base_path,
-                ) {
-                    error!("Error creando directorios en destino: {}", e);
-                }
-            }
-
-            // 5. Ejecutar copia con worker pool
-            self.set_state(GlobalState::Copying);
-            let cycle_id = stats.next_cycle_id();
-            let cycle_start = Instant::now();
-
-            info!(
-                "═══ Ciclo {} — {} archivos estables, {} trabajos ═══",
-                cycle_id,
-                stable_files.len(),
-                jobs.len()
-            );
-
-            let worker_config = WorkerConfig {
-                copy_engine: self.config.copy_engine.clone(),
-                verification: self.config.verification.clone(),
-                metadata: self.config.metadata.clone(),
-                conflicts: self.config.conflicts.clone(),
-                hash_algorithm: self.config.verification.hash_algorithm.clone(),
-                run_mode: self.config.general.run_mode.clone(),
-                retries_per_file: self.config.retry_policy.retries_per_file,
-                retry_delays: self.config.retry_policy.retry_delay_seconds_sequence.clone(),
-            };
-
-            let pool = WorkerPool::new(
-                self.config.copy_engine.worker_count,
-                self.config.copy_engine.copy_buffer_size_mib_per_worker,
-                worker_config,
-                self.shutdown.as_atomic(),
-            );
-
-            // Enviar trabajos
-            for job in jobs {
+            for (pair_index, pair) in self.config.sync_pairs.iter().enumerate() {
                 if self.shutdown.is_shutdown_requested() {
                     break;
                 }
-                if let Err(e) = pool.submit(job) {
-                    error!("Error enviando trabajo al pool: {}", e);
+
+                self.unmount_pair_letters(pair);
+
+                if !self.mount_pair(pair) {
+                    warn!(
+                        "Omitiendo par {}: no se pudieron montar unidades virtuales",
+                        pair_index
+                    );
+                    self.unmount_pair_letters(pair);
+                    continue;
                 }
-            }
 
-            // Esperar resultados
-            let results = pool.wait_for_completion(Duration::from_secs(3600));
+                let pair_detail = format!(
+                    "{} → {}",
+                    pair.source_path.display(),
+                    pair.target_path.display()
+                );
 
-            // Crear mapa de lookup para FileEntry por ruta relativa
-            let entry_lookup: std::collections::HashMap<_, _> = stable_files
-                .iter()
-                .map(|e| (e.relative_path.clone(), e))
-                .collect();
+                let src_root = virtual_drive_root(&pair.source_virtual_drive_letter);
+                let dest_base_path = virtual_drive_root(&pair.target_virtual_drive_letter);
 
-            // Registrar métricas por archivo
-            for result in &results {
-                stats.record_file_result(result, &cycle_id, &log_manager);
+                self.set_state(GlobalState::Scanning);
+                let scan_result = scanner::scan_directory(
+                    &src_root,
+                    &filter,
+                    self.config.copy_engine.ignore_symbolic_links,
+                    self.config.copy_engine.ignore_junctions,
+                );
 
-                // Marcar archivos procesados exitosamente
-                if result.state.is_success() {
-                    if result.state == crate::errors::FileState::AlreadyExistsSameHash {
-                        // Archivo idéntico ya existe en destino → cachear para
-                        // evitar re-hasheo en futuros ciclos
-                        if let Some(entry) = entry_lookup.get(&result.relative_path) {
-                            stability.mark_backed_up(entry);
-                        }
-                    } else {
-                        stability.mark_processed(&result.relative_path);
+                let files_detected = scan_result.files.len() as u64;
+
+                if scan_result.files.is_empty() {
+                    self.unmount_pair_letters(pair);
+                    continue;
+                }
+
+                let (stable_files, unstable_files) =
+                    stability_checkers[pair_index].evaluate(&scan_result.files);
+                let files_unstable = unstable_files.len() as u64;
+                stats.set_queue_depth(stable_files.len() as u64);
+
+                if stable_files.is_empty() {
+                    self.unmount_pair_letters(pair);
+                    continue;
+                }
+
+                had_stable_files_any_pair = true;
+
+                let large_threshold_bytes =
+                    self.config.copy_engine.large_file_threshold_mib * 1024 * 1024;
+
+                let jobs = planner::plan_copy_jobs(
+                    &stable_files,
+                    &dest_base_path,
+                    &self.config.copy_engine.temporary_destination_extension,
+                    large_threshold_bytes,
+                );
+
+                if self.config.copy_engine.preserve_empty_directory_hierarchy {
+                    if let Err(e) = planner::ensure_destination_directories(
+                        &scan_result.directories,
+                        &dest_base_path,
+                    ) {
+                        error!("Error creando directorios en destino: {}", e);
                     }
                 }
-            }
 
-            // Registrar métricas del ciclo
-            let cycle_metrics = stats.record_cycle(
-                &cycle_id,
-                &results,
-                files_detected,
-                files_unstable,
-                cycle_start,
-                &log_manager,
-            );
+                self.set_state(GlobalState::Copying(pair_detail.clone()));
+                let cycle_id = stats.next_cycle_id();
+                let cycle_start = Instant::now();
 
-            // Notificar al tray
-            if let Some(ref sender) = self.tray_sender {
-                sender
-                    .send(OrchestratorMessage::CycleCompleted {
-                        files_copied: cycle_metrics.files_copied,
-                        bytes_copied: cycle_metrics.bytes_copied,
-                    })
-                    .ok();
-            }
-
-            // Notificar si hubo errores
-            if cycle_metrics.files_failed > 0 {
-                self.notify(
-                    "Sincronia — Errores en ciclo",
-                    &format!(
-                        "{} archivos con error en ciclo {}",
-                        cycle_metrics.files_failed, cycle_id
-                    ),
+                info!(
+                    "═══ Par {} — Ciclo {} — {} archivos estables, {} trabajos ═══",
+                    pair_index,
+                    cycle_id,
+                    stable_files.len(),
+                    jobs.len()
                 );
-            }
 
-            // Detener el pool
-            pool.shutdown();
+                let worker_config = WorkerConfig {
+                    copy_engine: self.config.copy_engine.clone(),
+                    verification: self.config.verification.clone(),
+                    metadata: self.config.metadata.clone(),
+                    conflicts: self.config.conflicts.clone(),
+                    hash_algorithm: self.config.verification.hash_algorithm.clone(),
+                    run_mode: self.config.general.run_mode.clone(),
+                    retries_per_file: self.config.retry_policy.retries_per_file,
+                    retry_delays: self.config.retry_policy.retry_delay_seconds_sequence.clone(),
+                };
 
-            // 6. Limpiar directorios vacíos del origen
-            if self.config.copy_engine.remove_empty_source_directories_after_successful_processing {
-                planner::remove_empty_source_directories(
-                    &self.config.source.source_directory_path,
-                    &scan_result.directories,
+                let pool = WorkerPool::new(
+                    self.config.copy_engine.worker_count,
+                    self.config.copy_engine.copy_buffer_size_mib_per_worker,
+                    worker_config,
+                    self.shutdown.as_atomic(),
                 );
-            }
 
-            // 7. Verificar errores consecutivos
-            if stats.consecutive_errors
-                >= self.config.retry_policy.maximum_consecutive_errors_before_extended_pause
-            {
-                self.set_state(GlobalState::ErrorPersistent);
-                let delay = self.config.retry_policy.persistent_error_delay_seconds;
-                warn!(
-                    "{} errores consecutivos — pausa extendida de {}s",
-                    stats.consecutive_errors, delay
+                for job in jobs {
+                    if self.shutdown.is_shutdown_requested() {
+                        break;
+                    }
+                    if let Err(e) = pool.submit(job) {
+                        error!("Error enviando trabajo al pool: {}", e);
+                    }
+                }
+
+                let results = pool.wait_for_completion(Duration::from_secs(3600));
+
+                let entry_lookup: std::collections::HashMap<_, _> = stable_files
+                    .iter()
+                    .map(|e| (e.relative_path.clone(), e))
+                    .collect();
+
+                let checker = &mut stability_checkers[pair_index];
+                for result in &results {
+                    stats.record_file_result(result, &cycle_id, &log_manager);
+
+                    if result.state.is_success() {
+                        if result.state == crate::errors::FileState::AlreadyExistsSameHash {
+                            if let Some(entry) = entry_lookup.get(&result.relative_path) {
+                                checker.mark_backed_up(entry);
+                            }
+                        } else {
+                            checker.mark_processed(&result.relative_path);
+                        }
+                    }
+                }
+
+                let cycle_metrics = stats.record_cycle(
+                    &cycle_id,
+                    &results,
+                    files_detected,
+                    files_unstable,
+                    cycle_start,
+                    &log_manager,
                 );
-                self.notify(
-                    "Sincronia — Error persistente",
-                    &format!(
-                        "{} errores consecutivos. Pausa de {} segundos.",
+
+                if let Some(ref sender) = self.tray_sender {
+                    sender
+                        .send(OrchestratorMessage::CycleCompleted {
+                            files_copied: cycle_metrics.files_copied,
+                            bytes_copied: cycle_metrics.bytes_copied,
+                        })
+                        .ok();
+                }
+
+                if cycle_metrics.files_failed > 0 {
+                    self.notify(
+                        "Sincronia — Errores en ciclo",
+                        &format!(
+                            "{} archivos con error en ciclo {} (par {})",
+                            cycle_metrics.files_failed, cycle_id, pair_index
+                        ),
+                    );
+                }
+
+                pool.shutdown();
+
+                if self
+                    .config
+                    .copy_engine
+                    .remove_empty_source_directories_after_successful_processing
+                {
+                    planner::remove_empty_source_directories(&src_root, &scan_result.directories);
+                }
+
+                self.unmount_pair_letters(pair);
+
+                if stats.consecutive_errors
+                    >= self
+                        .config
+                        .retry_policy
+                        .maximum_consecutive_errors_before_extended_pause
+                {
+                    self.set_state(GlobalState::ErrorPersistent);
+                    let delay = self.config.retry_policy.persistent_error_delay_seconds;
+                    warn!(
+                        "{} errores consecutivos — pausa extendida de {}s",
                         stats.consecutive_errors, delay
-                    ),
-                );
-                self.interruptible_sleep(Duration::from_secs(delay));
-                continue;
+                    );
+                    self.notify(
+                        "Sincronia — Error persistente",
+                        &format!(
+                            "{} errores consecutivos. Pausa de {} segundos.",
+                            stats.consecutive_errors, delay
+                        ),
+                    );
+                    self.interruptible_sleep(Duration::from_secs(delay));
+                    extended_pause = true;
+                    break;
+                }
             }
 
-            // Esperar antes del siguiente ciclo
+            if self.shutdown.is_shutdown_requested() {
+                break 'global_loop;
+            }
+
+            if extended_pause {
+                continue 'global_loop;
+            }
+
             self.set_state(GlobalState::Idle);
-            let interval = self.config.source.scan_interval_seconds_after_changes;
-            self.interruptible_sleep(Duration::from_secs(interval));
+            let interval_secs = if had_stable_files_any_pair {
+                self.config
+                    .scan
+                    .scan_interval_seconds_after_changes
+            } else {
+                self.config
+                    .scan
+                    .scan_interval_seconds_when_no_changes
+            };
+            self.interruptible_sleep(Duration::from_secs(interval_secs));
+        }
+
+        for p in &self.config.sync_pairs {
+            self.unmount_pair_letters(p);
         }
 
         self.set_state(GlobalState::Stopped);
         info!("═══ Sincronia Orchestrator detenido ═══");
-    }
-
-    /// Asegura que el NAS esté disponible
-    fn ensure_nas_available(&self, stats: &mut StatsAggregator) -> bool {
-        match windows_nas::validate_drive(&self.config.nas) {
-            DriveValidation::ValidPrimary | DriveValidation::ValidFallbackIp => true,
-            DriveValidation::NotMounted => {
-                info!("NAS no montado — intentando montar...");
-                // Intentar montar sin credenciales primero (Kerberos)
-                match windows_nas::attempt_mount(&self.config.nas, None, None) {
-                    Ok(()) => {
-                        info!("NAS montado correctamente vía Kerberos");
-                        true
-                    }
-                    Err(_) => {
-                        // Necesita credenciales — mostrar diálogo nativo de Windows
-                        self.set_state(GlobalState::WaitingForCredentials);
-                        self.notify(
-                            "Sincronia — Credenciales requeridas",
-                            "Se necesitan credenciales para conectar al NAS.",
-                        );
-
-                        match credentials::prompt_credentials_gui(
-                            &self.config.nas.primary_unc_path,
-                            self.config.nas.maximum_credential_prompt_attempts,
-                        ) {
-                            Ok(creds) => {
-                                match windows_nas::attempt_mount(
-                                    &self.config.nas,
-                                    Some(&creds.username),
-                                    Some(&creds.password),
-                                ) {
-                                    Ok(()) => {
-                                        info!("NAS montado con credenciales");
-                                        true
-                                    }
-                                    Err(e) => {
-                                        error!("Fallo al montar NAS con credenciales: {}", e);
-                                        self.set_state(GlobalState::ErrorPersistent);
-                                        stats.set_nas_status("mount_failed");
-                                        false
-                                    }
-                                }
-                            }
-                            Err(e) => {
-                                warn!("No se obtuvieron credenciales: {}", e);
-                                self.set_state(GlobalState::ErrorTransient);
-                                stats.set_nas_status("credentials_unavailable");
-                                false
-                            }
-                        }
-                    }
-                }
-            }
-            DriveValidation::PointsElsewhere { current_target } => {
-                if self.config.nas.allow_automatic_remap_if_drive_points_elsewhere {
-                    warn!(
-                        "R: apunta a '{}' — intentando remapear",
-                        current_target
-                    );
-                    if let Err(e) = windows_nas::unmount_drive(&self.config.nas.required_drive_letter) {
-                        error!("Error al desmontar R: para remapeo: {}", e);
-                        return false;
-                    }
-                    match windows_nas::attempt_mount(&self.config.nas, None, None) {
-                        Ok(()) => true,
-                        Err(e) => {
-                            error!("Fallo al remontar R:: {}", e);
-                            false
-                        }
-                    }
-                } else {
-                    error!(
-                        "R: apunta a '{}' en lugar del NAS. Remapeo automático deshabilitado.",
-                        current_target
-                    );
-                    self.set_state(GlobalState::ErrorPersistent);
-                    self.notify(
-                        "Sincronia — R: incorrecta",
-                        &format!(
-                            "R: apunta a '{}'. Desmonte manualmente y reconecte.",
-                            current_target
-                        ),
-                    );
-                    stats.set_nas_status("drive_mismatch");
-                    false
-                }
-            }
-            DriveValidation::Error(msg) => {
-                error!("Error al validar NAS: {}", msg);
-                self.set_state(GlobalState::ErrorTransient);
-                stats.set_nas_status("validation_error");
-                false
-            }
-        }
     }
 
     /// Sleep interruptible por señal de parada
@@ -468,7 +497,6 @@ impl Orchestrator {
             if self.shutdown.is_shutdown_requested() {
                 return;
             }
-            // Procesar comandos del tray durante el sleep
             if let Some(ref rx) = self.command_receiver {
                 if let Ok(cmd) = rx.try_recv() {
                     match cmd {
@@ -476,8 +504,8 @@ impl Orchestrator {
                             self.shutdown.trigger();
                             return;
                         }
-                        TrayCommand::Resume | TrayCommand::RetryConnection | TrayCommand::MountNas => {
-                            return; // Salir del sleep para actuar
+                        TrayCommand::Resume => {
+                            return;
                         }
                         TrayCommand::Pause => {
                             self.set_state(GlobalState::Paused);

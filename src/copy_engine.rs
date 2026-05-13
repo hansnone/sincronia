@@ -8,7 +8,8 @@ use crate::errors::SincroniaError;
 use crate::planner::CopyJob;
 use std::io::{Read, Write};
 use std::path::Path;
-use std::time::Instant;
+use std::thread;
+use std::time::{Duration, Instant};
 use tracing::{debug, trace, warn};
 
 /// Resultado de la copia de un archivo
@@ -87,6 +88,11 @@ pub fn copy_file_buffered(
 
     // Sync para forzar escritura física (especialmente importante sobre SMB)
     sync_file(&writer)?;
+
+    // Cerrar handles de inmediato: sobre SMB (p. ej. smbd en macOS), el cierre
+    // asíncrono puede retrasar el `rename` del `.partial`; liberar aquí reduce la ventana.
+    drop(writer);
+    drop(reader);
 
     let duration = start.elapsed();
     let duration_ms = duration.as_millis() as u64;
@@ -182,7 +188,9 @@ fn sync_file(file: &std::fs::File) -> Result<(), SincroniaError> {
     })
 }
 
-/// Renombra el archivo temporal al nombre final (operación atómica en NTFS/ReFS)
+/// Renombra el archivo temporal al nombre final (operación atómica en NTFS/ReFS).
+/// Reintenta el `rename` por latencia SMB: en destinos macOS/APFS el servidor puede
+/// tardar unos ms en liberar el bloqueo tras cerrar el handle del cliente.
 pub fn finalize_copy(temp_path: &Path, final_path: &Path) -> Result<(), SincroniaError> {
     debug!(
         "Finalizando: {} → {}",
@@ -190,12 +198,38 @@ pub fn finalize_copy(temp_path: &Path, final_path: &Path) -> Result<(), Sincroni
         final_path.display()
     );
 
-    std::fs::rename(temp_path, final_path).map_err(|e| SincroniaError::Copy {
+    const MAX_ATTEMPTS: u32 = 5;
+    const RETRY_DELAY: Duration = Duration::from_millis(200);
+
+    let mut last_err = None::<std::io::Error>;
+
+    for attempt in 1..=MAX_ATTEMPTS {
+        match std::fs::rename(temp_path, final_path) {
+            Ok(()) => return Ok(()),
+            Err(e) => {
+                if attempt < MAX_ATTEMPTS {
+                    trace!(
+                        "rename intento {}/{} falló, reintentando tras {:?}: {}",
+                        attempt,
+                        MAX_ATTEMPTS,
+                        RETRY_DELAY,
+                        e
+                    );
+                    thread::sleep(RETRY_DELAY);
+                }
+                last_err = Some(e);
+            }
+        }
+    }
+
+    let e = last_err.expect("al menos un intento de rename");
+    Err(SincroniaError::Copy {
         path: final_path.to_path_buf(),
         message: format!(
-            "Error al renombrar temporal '{}' → '{}': {}",
+            "Error al renombrar temporal '{}' → '{}' tras {} intentos: {}",
             temp_path.display(),
             final_path.display(),
+            MAX_ATTEMPTS,
             e
         ),
     })

@@ -2,7 +2,7 @@
 name = "sincronia"
 version = "0.1.0"
 edition = "2024"
-description = "Motor de respaldo NAS de alto rendimiento para Windows 11 — 10 GbE"
+description = "Sincronización multipar de archivos de alto rendimiento para Windows 11"
 authors = ["sincronia"]
 
 [dependencies]
@@ -47,17 +47,8 @@ tray-icon = "0.17"
 [target.'cfg(windows)'.dependencies]
 windows = { version = "0.61", features = [
     "Win32_Foundation",
-    "Win32_Graphics_Gdi",
-    "Win32_NetworkManagement_WNet",
     "Win32_Security",
-    "Win32_Security_Credentials",
     "Win32_Storage_FileSystem",
-    "Win32_System_Com",
-    "Win32_System_Console",
-    "Win32_System_IO",
-    "Win32_System_Threading",
-    "Win32_UI_Shell",
-    "Win32_UI_WindowsAndMessaging",
 ] }
 tray-icon = "0.17"
 winit = "0.30"
