@@ -1,0 +1,215 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\locadmin> cd .\Desktop\prueba-sincronizacion-carpetas\carpeta-a\
+PS C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a> ls
+
+
+    Directory: C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        18/10/2025     08:12      750986878 D001C0001_250919_M01388.mov
+-a----        18/10/2025     08:13      174611538 D001C0002_250919_M01388.mov
+-a----        18/10/2025     08:13       68523050 D001C0003_250919_M01388.mov
+-a----        18/10/2025     08:14      290304274 D001C0004_250919_M01388.mov
+-a----        18/10/2025     08:15      343998182 D001C0005_250919_M01388.mov
+-a----        18/10/2025     08:20     1507334854 D001C0006_250919_M01388.mov
+-a----        18/10/2025     08:21       58181442 D001C0007_250919_M01388.mov
+-a----        18/10/2025     08:22      314658062 D001C0008_250919_M01388.mov
+-a----        18/10/2025     08:23      254776518 D001C0009_250919_M01388.mov
+-a----        18/10/2025     08:26      662121714 D001C0010_250919_M01388.mov
+-a----        18/10/2025     08:28      427127222 D001C0011_250919_M01388.mov
+-a----        18/10/2025     08:28       95882102 D001C0012_250919_M01388.mov
+-a----        18/10/2025     08:35     1501547214 D001C0013_250919_M01388.mov
+-a----        18/10/2025     08:45     2497888630 D002C0001_250919_M01389.mov
+-a----        18/10/2025     08:47      445368882 D002C0002_250919_M01389.mov
+
+
+PS C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a> cd ..
+PS C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas> cd .\carpeta-b\
+PS C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-b> ls
+
+
+    Directory: C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-b
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        12/05/2026     13:57                COPIA DE LOS BUENOS
+d-----        12/05/2026     13:57                CSV2
+d-----        12/05/2026     10:32                ESPloitV2-master
+d-----        12/05/2026     13:58                OpenEXR-expermientos
+-a----        02/03/2026     17:50           3300 backup.ps1
+-a----        23/01/2026     11:30       73018433 Catalogo_2026-01-23.csv
+-a----        01/02/2026     01:31       75202173 Catalogo_2026-02-01.csv
+-a----        01/03/2026     01:31       81366317 Catalogo_2026-03-01.csv
+-a----        01/04/2026     01:31       83212523 Catalogo_2026-04-01.csv
+-a----        02/04/2026     01:31       83594715 Catalogo_2026-04-02.csv
+-a----        03/04/2026     01:31       83583884 Catalogo_2026-04-03.csv
+-a----        04/04/2026     01:31       83583705 Catalogo_2026-04-04.csv
+-a----        05/04/2026     01:31       83583680 Catalogo_2026-04-05.csv
+-a----        06/04/2026     01:31       83584747 Catalogo_2026-04-06.csv
+-a----        07/04/2026     01:31       84305789 Catalogo_2026-04-07.csv
+-a----        08/04/2026     01:31       84529436 Catalogo_2026-04-08.csv
+-a----        09/04/2026     01:31       85461946 Catalogo_2026-04-09.csv
+-a----        10/04/2026     01:31       85814314 Catalogo_2026-04-10.csv
+-a----        13/04/2026     11:05      172163867 Catalogo_2026-04-13.csv
+-a----        14/04/2026     01:31       86790770 Catalogo_2026-04-14.csv
+-a----        15/04/2026     01:31       87514318 Catalogo_2026-04-15.csv
+-a----        16/04/2026     11:22       88147443 Catalogo_2026-04-16.csv
+-a----        17/04/2026     01:31       89348883 Catalogo_2026-04-17.csv
+-a----        18/04/2026     01:31       89979910 Catalogo_2026-04-18.csv
+-a----        19/04/2026     01:31       89962082 Catalogo_2026-04-19.csv
+-a----        20/04/2026     01:31       89986510 Catalogo_2026-04-20.csv
+-a----        21/04/2026     13:26      180706211 Catalogo_2026-04-21.csv
+-a----        22/04/2026     01:31       90779329 Catalogo_2026-04-22.csv
+-a----        27/04/2026     12:40      552615756 Catalogo_2026-04-27.csv
+-a----        28/04/2026     09:52       92312410 Catalogo_2026-04-28.csv
+-a----        30/04/2026     13:26       93086379 Catalogo_2026-04-30.csv
+-a----        01/05/2026     01:32       93572662 Catalogo_2026-05-01.csv
+-a----        02/05/2026     01:32       93522281 Catalogo_2026-05-02.csv
+-a----        03/05/2026     01:32       93522699 Catalogo_2026-05-03.csv
+-a----        04/05/2026     09:54      187067620 Catalogo_2026-05-04.csv
+-a----        05/05/2026     01:31       93929269 Catalogo_2026-05-05.csv
+-a----        06/05/2026     11:37      188670206 Catalogo_2026-05-06.csv
+-a----        07/05/2026     01:32       95106968 Catalogo_2026-05-07.csv
+-a----        11/05/2026     13:31      479076404 Catalogo_2026-05-11.csv
+-a----        17/03/2026     15:37      103633727 ERO_QAC_FAMILIA_SHOT_010_V01.1001.exr
+-a----        17/03/2026     15:37      103639566 ERO_QAC_FAMILIA_SHOT_010_V01.1002.exr
+-a----        17/03/2026     15:37      103673521 ERO_QAC_FAMILIA_SHOT_010_V01.1003.exr
+-a----        17/03/2026     15:38      103612086 ERO_QAC_FAMILIA_SHOT_010_V01.1004.exr
+-a----        17/03/2026     15:38      103694174 ERO_QAC_FAMILIA_SHOT_010_V01.1005.exr
+-a----        17/03/2026     15:38      103679602 ERO_QAC_FAMILIA_SHOT_010_V01.1006.exr
+-a----        17/03/2026     15:38      103701644 ERO_QAC_FAMILIA_SHOT_010_V01.1007.exr
+-a----        17/03/2026     15:38      103703810 ERO_QAC_FAMILIA_SHOT_010_V01.1008.exr
+-a----        17/03/2026     15:38      103698770 ERO_QAC_FAMILIA_SHOT_010_V01.1009.exr
+-a----        17/03/2026     15:38      103788662 ERO_QAC_FAMILIA_SHOT_010_V01.1010.exr
+-a----        17/03/2026     15:38      103732269 ERO_QAC_FAMILIA_SHOT_010_V01.1011.exr
+-a----        17/03/2026     15:38      103759387 ERO_QAC_FAMILIA_SHOT_010_V01.1012.exr
+-a----        17/03/2026     15:38      103790468 ERO_QAC_FAMILIA_SHOT_010_V01.1013.exr
+-a----        17/03/2026     15:38      103780091 ERO_QAC_FAMILIA_SHOT_010_V01.1014.exr
+-a----        17/03/2026     15:38      103819653 ERO_QAC_FAMILIA_SHOT_010_V01.1015.exr
+-a----        17/03/2026     15:38      103796070 ERO_QAC_FAMILIA_SHOT_010_V01.1016.exr
+-a----        17/03/2026     15:38      103842963 ERO_QAC_FAMILIA_SHOT_010_V01.1017.exr
+-a----        17/03/2026     15:38      103868987 ERO_QAC_FAMILIA_SHOT_010_V01.1018.exr
+-a----        17/03/2026     15:38      103841169 ERO_QAC_FAMILIA_SHOT_010_V01.1019.exr
+-a----        17/03/2026     15:38      103906404 ERO_QAC_FAMILIA_SHOT_010_V01.1020.exr
+-a----        17/03/2026     15:38      103868231 ERO_QAC_FAMILIA_SHOT_010_V01.1021.exr
+-a----        17/03/2026     15:38      103852554 ERO_QAC_FAMILIA_SHOT_010_V01.1022.exr
+-a----        17/03/2026     15:38      103932837 ERO_QAC_FAMILIA_SHOT_010_V01.1023.exr
+-a----        17/03/2026     15:38      103906456 ERO_QAC_FAMILIA_SHOT_010_V01.1024.exr
+-a----        17/03/2026     15:38      103998800 ERO_QAC_FAMILIA_SHOT_010_V01.1025.exr
+-a----        17/03/2026     15:38      103976669 ERO_QAC_FAMILIA_SHOT_010_V01.1026.exr
+-a----        17/03/2026     15:38      103996159 ERO_QAC_FAMILIA_SHOT_010_V01.1027.exr
+-a----        17/03/2026     15:38      103989923 ERO_QAC_FAMILIA_SHOT_010_V01.1028.exr
+-a----        17/03/2026     15:38      103961876 ERO_QAC_FAMILIA_SHOT_010_V01.1029.exr
+-a----        17/03/2026     15:38      104017925 ERO_QAC_FAMILIA_SHOT_010_V01.1030.exr
+-a----        17/03/2026     15:38      103976864 ERO_QAC_FAMILIA_SHOT_010_V01.1031.exr
+-a----        17/03/2026     15:38      103998741 ERO_QAC_FAMILIA_SHOT_010_V01.1032.exr
+-a----        17/03/2026     15:38      104075473 ERO_QAC_FAMILIA_SHOT_010_V01.1033.exr
+-a----        17/03/2026     15:38      103997419 ERO_QAC_FAMILIA_SHOT_010_V01.1034.exr
+-a----        17/03/2026     15:38      104065495 ERO_QAC_FAMILIA_SHOT_010_V01.1035.exr
+-a----        17/03/2026     15:38      104024829 ERO_QAC_FAMILIA_SHOT_010_V01.1036.exr
+-a----        17/03/2026     15:38      104037507 ERO_QAC_FAMILIA_SHOT_010_V01.1037.exr
+-a----        17/03/2026     15:38      104089598 ERO_QAC_FAMILIA_SHOT_010_V01.1038.exr
+-a----        17/03/2026     15:38      104033282 ERO_QAC_FAMILIA_SHOT_010_V01.1039.exr
+-a----        17/03/2026     15:38      104100506 ERO_QAC_FAMILIA_SHOT_010_V01.1040.exr
+-a----        17/03/2026     15:38      104041165 ERO_QAC_FAMILIA_SHOT_010_V01.1041.exr
+-a----        17/03/2026     15:38      104066039 ERO_QAC_FAMILIA_SHOT_010_V01.1042.exr
+-a----        17/03/2026     15:38      104074281 ERO_QAC_FAMILIA_SHOT_010_V01.1043.exr
+-a----        17/03/2026     15:38      104053157 ERO_QAC_FAMILIA_SHOT_010_V01.1044.exr
+-a----        17/03/2026     15:38      104123010 ERO_QAC_FAMILIA_SHOT_010_V01.1045.exr
+-a----        17/03/2026     15:38      104048436 ERO_QAC_FAMILIA_SHOT_010_V01.1046.exr
+-a----        17/03/2026     15:38      104058719 ERO_QAC_FAMILIA_SHOT_010_V01.1047.exr
+-a----        17/03/2026     15:38      104109601 ERO_QAC_FAMILIA_SHOT_010_V01.1048.exr
+-a----        17/03/2026     15:38      104082428 ERO_QAC_FAMILIA_SHOT_010_V01.1049.exr
+-a----        17/03/2026     15:38      104143869 ERO_QAC_FAMILIA_SHOT_010_V01.1050.exr
+-a----        17/03/2026     15:38      104083052 ERO_QAC_FAMILIA_SHOT_010_V01.1051.exr
+-a----        17/03/2026     15:38      104055254 ERO_QAC_FAMILIA_SHOT_010_V01.1052.exr
+-a----        17/03/2026     15:38      104103315 ERO_QAC_FAMILIA_SHOT_010_V01.1053.exr
+-a----        17/03/2026     15:39      104043554 ERO_QAC_FAMILIA_SHOT_010_V01.1054.exr
+-a----        17/03/2026     15:39      104109315 ERO_QAC_FAMILIA_SHOT_010_V01.1055.exr
+-a----        17/03/2026     15:39      104062831 ERO_QAC_FAMILIA_SHOT_010_V01.1056.exr
+-a----        17/03/2026     15:39      104069772 ERO_QAC_FAMILIA_SHOT_010_V01.1057.exr
+-a----        17/03/2026     15:39      104079953 ERO_QAC_FAMILIA_SHOT_010_V01.1058.exr
+-a----        17/03/2026     15:39      104024963 ERO_QAC_FAMILIA_SHOT_010_V01.1059.exr
+-a----        17/03/2026     15:39      104121450 ERO_QAC_FAMILIA_SHOT_010_V01.1060.exr
+-a----        17/03/2026     15:39      104077198 ERO_QAC_FAMILIA_SHOT_010_V01.1061.exr
+-a----        17/03/2026     15:39      104053960 ERO_QAC_FAMILIA_SHOT_010_V01.1062.exr
+-a----        17/03/2026     15:39      104114946 ERO_QAC_FAMILIA_SHOT_010_V01.1063.exr
+-a----        17/03/2026     15:39      104021698 ERO_QAC_FAMILIA_SHOT_010_V01.1064.exr
+-a----        17/03/2026     15:39      104164833 ERO_QAC_FAMILIA_SHOT_010_V01.1065.exr
+-a----        17/03/2026     15:39      104071717 ERO_QAC_FAMILIA_SHOT_010_V01.1066.exr
+-a----        17/03/2026     15:39      104070546 ERO_QAC_FAMILIA_SHOT_010_V01.1067.exr
+-a----        17/03/2026     15:39      104127084 ERO_QAC_FAMILIA_SHOT_010_V01.1068.exr
+-a----        17/03/2026     15:39      104091497 ERO_QAC_FAMILIA_SHOT_010_V01.1069.exr
+-a----        17/03/2026     15:39      104162578 ERO_QAC_FAMILIA_SHOT_010_V01.1070.exr
+-a----        17/03/2026     15:39      104089472 ERO_QAC_FAMILIA_SHOT_010_V01.1071.exr
+-a----        17/03/2026     15:39      104074120 ERO_QAC_FAMILIA_SHOT_010_V01.1072.exr
+-a----        17/03/2026     15:39      104122295 ERO_QAC_FAMILIA_SHOT_010_V01.1073.exr
+-a----        17/03/2026     15:39      104084013 ERO_QAC_FAMILIA_SHOT_010_V01.1074.exr
+-a----        17/03/2026     15:39      104206477 ERO_QAC_FAMILIA_SHOT_010_V01.1075.exr
+-a----        17/03/2026     15:39      104145408 ERO_QAC_FAMILIA_SHOT_010_V01.1076.exr
+-a----        17/03/2026     15:39      104107035 ERO_QAC_FAMILIA_SHOT_010_V01.1077.exr
+-a----        17/03/2026     15:39      104176745 ERO_QAC_FAMILIA_SHOT_010_V01.1078.exr
+-a----        17/03/2026     15:39      104120215 ERO_QAC_FAMILIA_SHOT_010_V01.1079.exr
+-a----        17/03/2026     15:39      104196845 ERO_QAC_FAMILIA_SHOT_010_V01.1080.exr
+-a----        17/03/2026     15:39      104125683 ERO_QAC_FAMILIA_SHOT_010_V01.1081.exr
+-a----        17/03/2026     15:39      104158154 ERO_QAC_FAMILIA_SHOT_010_V01.1082.exr
+-a----        17/03/2026     15:39      104214683 ERO_QAC_FAMILIA_SHOT_010_V01.1083.exr
+-a----        17/03/2026     15:39      104129776 ERO_QAC_FAMILIA_SHOT_010_V01.1084.exr
+-a----        17/03/2026     15:39      104237864 ERO_QAC_FAMILIA_SHOT_010_V01.1085.exr
+-a----        17/03/2026     15:39      104182509 ERO_QAC_FAMILIA_SHOT_010_V01.1086.exr
+-a----        17/03/2026     15:39      104166341 ERO_QAC_FAMILIA_SHOT_010_V01.1087.exr
+-a----        17/03/2026     15:39      104220512 ERO_QAC_FAMILIA_SHOT_010_V01.1088.exr
+-a----        17/03/2026     15:39      104182042 ERO_QAC_FAMILIA_SHOT_010_V01.1089.exr
+-a----        17/03/2026     15:39      104235523 ERO_QAC_FAMILIA_SHOT_010_V01.1090.exr
+-a----        17/03/2026     15:39      104172750 ERO_QAC_FAMILIA_SHOT_010_V01.1091.exr
+-a----        17/03/2026     15:39      104197290 ERO_QAC_FAMILIA_SHOT_010_V01.1092.exr
+-a----        17/03/2026     15:39      104232199 ERO_QAC_FAMILIA_SHOT_010_V01.1093.exr
+-a----        17/03/2026     15:39      104198347 ERO_QAC_FAMILIA_SHOT_010_V01.1094.exr
+-a----        17/03/2026     15:39      104280828 ERO_QAC_FAMILIA_SHOT_010_V01.1095.exr
+-a----        17/03/2026     15:39      104218295 ERO_QAC_FAMILIA_SHOT_010_V01.1096.exr
+-a----        17/03/2026     15:39      104201611 ERO_QAC_FAMILIA_SHOT_010_V01.1097.exr
+-a----        17/03/2026     15:39      104222020 ERO_QAC_FAMILIA_SHOT_010_V01.1098.exr
+-a----        17/03/2026     15:39      104162147 ERO_QAC_FAMILIA_SHOT_010_V01.1099.exr
+-a----        17/03/2026     15:40      104283445 ERO_QAC_FAMILIA_SHOT_010_V01.1100.exr
+-a----        17/03/2026     15:40      104201127 ERO_QAC_FAMILIA_SHOT_010_V01.1101.exr
+-a----        17/03/2026     15:40      104206335 ERO_QAC_FAMILIA_SHOT_010_V01.1102.exr
+-a----        17/03/2026     15:40      104226234 ERO_QAC_FAMILIA_SHOT_010_V01.1103.exr
+-a----        17/03/2026     15:40      104172967 ERO_QAC_FAMILIA_SHOT_010_V01.1104.exr
+-a----        17/03/2026     15:40      104239686 ERO_QAC_FAMILIA_SHOT_010_V01.1105.exr
+-a----        17/03/2026     15:40      104210435 ERO_QAC_FAMILIA_SHOT_010_V01.1106.exr
+-a----        17/03/2026     15:40      104195703 ERO_QAC_FAMILIA_SHOT_010_V01.1107.exr
+-a----        17/03/2026     15:40      104252370 ERO_QAC_FAMILIA_SHOT_010_V01.1108.exr
+-a----        17/03/2026     15:40      104208330 ERO_QAC_FAMILIA_SHOT_010_V01.1109.exr
+-a----        17/03/2026     15:40      104265400 ERO_QAC_FAMILIA_SHOT_010_V01.1110.exr
+-a----        17/03/2026     15:40      104210134 ERO_QAC_FAMILIA_SHOT_010_V01.1111.exr
+-a----        17/03/2026     15:40      104211514 ERO_QAC_FAMILIA_SHOT_010_V01.1112.exr
+-a----        17/03/2026     15:40      104249723 ERO_QAC_FAMILIA_SHOT_010_V01.1113.exr
+-a----        17/03/2026     15:40      104163209 ERO_QAC_FAMILIA_SHOT_010_V01.1114.exr
+-a----        17/03/2026     15:40      104285461 ERO_QAC_FAMILIA_SHOT_010_V01.1115.exr
+-a----        17/03/2026     15:40      104194176 ERO_QAC_FAMILIA_SHOT_010_V01.1116.exr
+-a----        17/03/2026     15:40      104219553 ERO_QAC_FAMILIA_SHOT_010_V01.1117.exr
+-a----        17/03/2026     15:40      104262415 ERO_QAC_FAMILIA_SHOT_010_V01.1118.exr
+-a----        17/03/2026     15:40      104178251 ERO_QAC_FAMILIA_SHOT_010_V01.1119.exr
+-a----        17/03/2026     15:40      104225191 ERO_QAC_FAMILIA_SHOT_010_V01.1120.exr
+-a----        17/03/2026     15:40      104195331 ERO_QAC_FAMILIA_SHOT_010_V01.1121.exr
+-a----        17/03/2026     15:40      104200746 ERO_QAC_FAMILIA_SHOT_010_V01.1122.exr
+-a----        17/03/2026     15:40      104236020 ERO_QAC_FAMILIA_SHOT_010_V01.1123.exr
+-a----        17/03/2026     15:40      104162038 ERO_QAC_FAMILIA_SHOT_010_V01.1124.exr
+-a----        17/03/2026     15:40      104263040 ERO_QAC_FAMILIA_SHOT_010_V01.1125.exr
+-a----        17/03/2026     15:40      104177305 ERO_QAC_FAMILIA_SHOT_010_V01.1126.exr
+-a----        17/03/2026     15:40      104204491 ERO_QAC_FAMILIA_SHOT_010_V01.1127.exr
+-a----        17/03/2026     15:40      104203327 ERO_QAC_FAMILIA_SHOT_010_V01.1128.exr
+-a----        17/03/2026     15:40      104119901 ERO_QAC_FAMILIA_SHOT_010_V01.1129.exr
+-a----        12/05/2026     14:01         125161 klkmanin.txt
+-a----        12/05/2026     13:59              0 New Microsoft Word Document.docx
+-a----        12/05/2026     13:58              0 New Text Document.txt
+
+
+PS C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-b>

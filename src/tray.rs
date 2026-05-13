@@ -92,6 +92,7 @@ pub fn run_tray(
         command_sender,
         global_state,
         menu_status_item: None,
+        _hidden_window: None,
     };
 
     event_loop.run_app(&mut app).ok();
@@ -104,13 +105,25 @@ struct TrayApp {
     command_sender: Sender<TrayCommand>,
     global_state: Arc<RwLock<GlobalState>>,
     menu_status_item: Option<MenuItem>,
+    _hidden_window: Option<winit::window::Window>,
 }
 
 #[cfg(windows)]
 impl ApplicationHandler<TrayEvent> for TrayApp {
-    fn resumed(&mut self, _event_loop: &ActiveEventLoop) {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
         if self.tray_icon.is_some() {
             return; // Ya inicializado
+        }
+
+        // Crear una ventana oculta para evitar que el event loop de winit 0.30
+        // salga automáticamente por no tener ventanas abiertas.
+        if self._hidden_window.is_none() {
+            let attrs = winit::window::Window::default_attributes()
+                .with_visible(false)
+                .with_title("Sincronia Hidden EventLoop Keeper");
+            if let Ok(window) = event_loop.create_window(attrs) {
+                self._hidden_window = Some(window);
+            }
         }
 
         // Crear menú contextual
