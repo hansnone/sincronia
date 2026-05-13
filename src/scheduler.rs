@@ -57,7 +57,7 @@ pub struct WorkerConfig {
 /// Pool de workers para procesamiento de trabajos de copia
 pub struct WorkerPool {
     /// Sender para enviar trabajos a los workers
-    job_sender: Sender<CopyJob>,
+    job_sender: Option<Sender<CopyJob>>,
     /// Receiver para recoger resultados
     result_receiver: Receiver<JobResult>,
     /// Handles de los threads workers
@@ -118,7 +118,7 @@ impl WorkerPool {
         info!("{} workers iniciados con buffer de {} MiB cada uno", worker_count, buffer_size_mib);
 
         Self {
-            job_sender,
+            job_sender: Some(job_sender),
             result_receiver,
             worker_handles,
             shutdown: shutdown_signal,
@@ -128,12 +128,19 @@ impl WorkerPool {
 
     /// Envía un trabajo al pool
     pub fn submit(&self, job: CopyJob) -> Result<(), SincroniaError> {
-        self.job_sender.send(job).map_err(|_| SincroniaError::Copy {
-            path: std::path::PathBuf::new(),
-            message: "Canal de trabajos cerrado".into(),
-        })?;
-        self.submitted_count.fetch_add(1, Ordering::SeqCst);
-        Ok(())
+        if let Some(sender) = &self.job_sender {
+            sender.send(job).map_err(|_| SincroniaError::Copy {
+                path: std::path::PathBuf::new(),
+                message: "Canal de trabajos cerrado".into(),
+            })?;
+            self.submitted_count.fetch_add(1, Ordering::SeqCst);
+            Ok(())
+        } else {
+            Err(SincroniaError::Copy {
+                path: std::path::PathBuf::new(),
+                message: "Canal de trabajos cerrado (pool finalizado)".into(),
+            })
+        }
     }
 
     /// Recoge todos los resultados disponibles (no bloqueante)
@@ -148,7 +155,9 @@ impl WorkerPool {
     /// Espera a que todos los trabajos pendientes se completen.
     /// Espera hasta recibir exactamente tantos resultados como trabajos enviados,
     /// o hasta que se agote el timeout.
-    pub fn wait_for_completion(&self, timeout: Duration) -> Vec<JobResult> {
+    pub fn wait_for_completion(&mut self, timeout: Duration) -> Vec<JobResult> {
+        self.job_sender.take(); // Destruimos el emisor para que los workers sepan que no hay más trabajos
+
         let expected = self.submitted_count.load(Ordering::SeqCst);
         let mut results = Vec::with_capacity(expected);
         let start = Instant::now();
@@ -198,9 +207,10 @@ impl WorkerPool {
     }
 
     /// Detiene el pool de workers de forma ordenada
-    pub fn shutdown(self) {
-        self.shutdown.store(true, Ordering::Relaxed);
-        drop(self.job_sender); // Cerrar canal para desbloquear recv()
+    pub fn shutdown(mut self) {
+        // NOTA: NO modificamos `self.shutdown` aquí porque es la señal global del Orquestador.
+        // Si la pusiéramos a `true`, todo el programa se detendría tras el primer ciclo.
+        self.job_sender.take(); // Cerrar canal para desbloquear recv()
 
         for handle in self.worker_handles {
             handle.join().ok();

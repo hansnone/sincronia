@@ -147,6 +147,103 @@ pub fn resolve_conflict(
                 }
             }
         }
+        ConflictExistsAction::SizeAndMtime => {
+            info!(
+                "Comparando tamaño y fecha de modificación para {}",
+                destination_path.display()
+            );
+
+            let source_meta = std::fs::metadata(source_path).map_err(|e| SincroniaError::Io {
+                path: source_path.to_path_buf(),
+                source: e,
+            })?;
+            let dest_meta = std::fs::metadata(destination_path).map_err(|e| SincroniaError::Io {
+                path: destination_path.to_path_buf(),
+                source: e,
+            })?;
+
+            let source_size = source_meta.len();
+            let dest_size = dest_meta.len();
+
+            let source_mtime = source_meta.modified().unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+            let dest_mtime = dest_meta.modified().unwrap_or(std::time::SystemTime::UNIX_EPOCH);
+
+            // Toleramos una diferencia de hasta 2 segundos para compensar la precisión de SMB/FAT
+            let mtime_diff = source_mtime.duration_since(dest_mtime)
+                .unwrap_or_else(|e| e.duration())
+                .as_secs();
+
+            if source_size == dest_size && mtime_diff <= 2 {
+                match &config.if_hash_is_equal {
+                    HashEqualAction::MarkAsAlreadyBackedUp => {
+                        info!(
+                            "Tamaño y MTime iguales — marcado como ya respaldado: {}",
+                            destination_path.display()
+                        );
+                        Ok((
+                            ConflictResolution::AlreadyExists,
+                            FileState::AlreadyExistsSameHash,
+                        ))
+                    }
+                    HashEqualAction::Skip => {
+                        debug!(
+                            "Tamaño y MTime iguales — saltando: {}",
+                            destination_path.display()
+                        );
+                        Ok((
+                            ConflictResolution::AlreadyExists,
+                            FileState::AlreadyExistsSameHash,
+                        ))
+                    }
+                }
+            } else {
+                warn!(
+                    "Tamaño o MTime DIFERENTE para {}: size({} vs {}), mtime_diff={}s",
+                    destination_path.display(),
+                    source_size, dest_size, mtime_diff
+                );
+
+                match &config.if_hash_is_different {
+                    HashDifferentAction::CreateVersionedCopy => {
+                        let versioned = generate_versioned_path(
+                            destination_path,
+                            &config.versioned_copy_naming_strategy,
+                        );
+                        info!(
+                            "Tamaño/MTime diferente — creando copia versionada: {}",
+                            versioned.display()
+                        );
+                        Ok((
+                            ConflictResolution::CreateVersionedCopy(versioned),
+                            FileState::VersionedCopyCreated,
+                        ))
+                    }
+                    HashDifferentAction::MoveToConflictDirectory => {
+                        let conflict_dir = destination_path
+                            .parent()
+                            .unwrap_or(Path::new("."))
+                            .join(&config.conflict_directory_name);
+                        let conflict_path = conflict_dir.join(
+                            destination_path
+                                .file_name()
+                                .unwrap_or_default(),
+                        );
+                        let versioned = generate_versioned_path(
+                            &conflict_path,
+                            &config.versioned_copy_naming_strategy,
+                        );
+                        info!(
+                            "Tamaño/MTime diferente — enviando a directorio de conflictos: {}",
+                            versioned.display()
+                        );
+                        Ok((
+                            ConflictResolution::CreateVersionedCopy(versioned),
+                            FileState::ConflictDestinationExistsDifferentHash,
+                        ))
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -154,7 +154,8 @@ preserve_audit = false
 #   "hash_compare"   → comparar hash para decidir
 #   "skip"           → saltar el archivo
 #   "always_version" → crear siempre copia versionada
-if_destination_file_exists = "hash_compare"
+#   "size_and_mtime" → compara tamaño y fecha de modificación (recomendado para SMB)
+if_destination_file_exists = "size_and_mtime"
 
 # Si el hash es igual (archivo idéntico ya existe en destino):
 #   "mark_as_already_backed_up" → registrar y continuar

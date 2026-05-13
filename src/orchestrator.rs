@@ -358,7 +358,7 @@ impl Orchestrator {
                     retry_delays: self.config.retry_policy.retry_delay_seconds_sequence.clone(),
                 };
 
-                let pool = WorkerPool::new(
+                let mut pool = WorkerPool::new(
                     self.config.copy_engine.worker_count,
                     self.config.copy_engine.copy_buffer_size_mib_per_worker,
                     worker_config,

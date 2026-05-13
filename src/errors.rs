@@ -300,6 +300,8 @@ pub enum ConflictExistsAction {
     Skip,
     /// Crear siempre copia versionada
     AlwaysVersion,
+    /// Comparar tamaño y fecha de modificación
+    SizeAndMtime,
 }
 
 impl Default for ConflictExistsAction {
