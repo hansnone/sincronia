@@ -269,13 +269,27 @@ impl Orchestrator {
             // Esperar resultados
             let results = pool.wait_for_completion(Duration::from_secs(3600));
 
+            // Crear mapa de lookup para FileEntry por ruta relativa
+            let entry_lookup: std::collections::HashMap<_, _> = stable_files
+                .iter()
+                .map(|e| (e.relative_path.clone(), e))
+                .collect();
+
             // Registrar métricas por archivo
             for result in &results {
                 stats.record_file_result(result, &cycle_id, &log_manager);
 
                 // Marcar archivos procesados exitosamente
                 if result.state.is_success() {
-                    stability.mark_processed(&result.relative_path);
+                    if result.state == crate::errors::FileState::AlreadyExistsSameHash {
+                        // Archivo idéntico ya existe en destino → cachear para
+                        // evitar re-hasheo en futuros ciclos
+                        if let Some(entry) = entry_lookup.get(&result.relative_path) {
+                            stability.mark_backed_up(entry);
+                        }
+                    } else {
+                        stability.mark_processed(&result.relative_path);
+                    }
                 }
             }
 

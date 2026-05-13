@@ -1,0 +1,627 @@
+2026-05-13T08:06:15.242274Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Cargando configuración → Validando configuración
+2026-05-13T08:06:15.242429Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Validando configuración → Comprobando NAS
+2026-05-13T08:06:15.242596Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: no está montada
+2026-05-13T08:06:15.242786Z  INFO ThreadId(03) sincronia::orchestrator: NAS no montado — intentando montar...
+2026-05-13T08:06:15.242893Z  INFO ThreadId(03) sincronia::windows_nas: Montando R: → \\10.71.11.41\RAW_NAS\SW\Destino vía WNet API
+2026-05-13T08:06:15.253647Z  INFO ThreadId(01) sincronia::tray: Icono de bandeja creado correctamente
+2026-05-13T08:06:17.581331Z ERROR ThreadId(03) sincronia::windows_nas: WNetAddConnection2W falló (código: 86)
+2026-05-13T08:06:17.581522Z  WARN ThreadId(03) sincronia::windows_nas: WNet API falló con UNC primario: Error de NAS: No se pudo montar R: → \\10.71.11.41\RAW_NAS\SW\Destino: código de error 86
+2026-05-13T08:06:17.581669Z  INFO ThreadId(03) sincronia::windows_nas: Montando R: → \\10.71.11.41\RAW_NAS\SW\Destino vía WNet API
+2026-05-13T08:06:17.583151Z ERROR ThreadId(03) sincronia::windows_nas: WNetAddConnection2W falló (código: 86)
+2026-05-13T08:06:17.583300Z  WARN ThreadId(03) sincronia::windows_nas: WNet API falló con IP fallback: Error de NAS: No se pudo montar R: → \\10.71.11.41\RAW_NAS\SW\Destino: código de error 86
+2026-05-13T08:06:17.583437Z  WARN ThreadId(03) sincronia::windows_nas: Usando fallback 'net use' para montar R: → \\10.71.11.41\RAW_NAS\SW\Destino (menos seguro que WNet API)
+2026-05-13T08:06:17.583532Z  INFO ThreadId(03) sincronia::windows_nas: Ejecutando: net use R: \\10.71.11.41\RAW_NAS\SW\Destino /user:*** /persistent:no
+2026-05-13T08:06:17.651094Z ERROR ThreadId(03) sincronia::windows_nas: net use falló: System error 1223 has occurred.
+
+The operation was canceled by the user.
+
+
+2026-05-13T08:06:17.651290Z  WARN ThreadId(03) sincronia::windows_nas: net use falló con UNC primario: Error de NAS: net use falló: System error 1223 has occurred.
+
+The operation was canceled by the user.
+2026-05-13T08:06:17.651396Z  WARN ThreadId(03) sincronia::windows_nas: Usando fallback 'net use' para montar R: → \\10.71.11.41\RAW_NAS\SW\Destino (menos seguro que WNet API)
+2026-05-13T08:06:17.651459Z  INFO ThreadId(03) sincronia::windows_nas: Ejecutando: net use R: \\10.71.11.41\RAW_NAS\SW\Destino /user:*** /persistent:no
+2026-05-13T08:06:17.694963Z ERROR ThreadId(03) sincronia::windows_nas: net use falló: System error 1223 has occurred.
+
+The operation was canceled by the user.
+
+
+2026-05-13T08:06:17.695186Z  WARN ThreadId(03) sincronia::windows_nas: net use falló con IP fallback: Error de NAS: net use falló: System error 1223 has occurred.
+
+The operation was canceled by the user.
+2026-05-13T08:06:17.695331Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → Esperando credenciales
+2026-05-13T08:06:17.695438Z  INFO ThreadId(03) sincronia::credentials: Mostrando diálogo de credenciales (intento 1/3)
+2026-05-13T08:06:17.697203Z  INFO ThreadId(01) sincronia::tray: Notificación: Sincronia — Credenciales requeridas — Se necesitan credenciales para conectar al NAS.
+2026-05-13T08:06:50.933169Z  INFO ThreadId(03) sincronia::credentials: Credenciales proporcionadas por el usuario (intento 1)
+2026-05-13T08:06:50.933315Z  INFO ThreadId(03) sincronia::windows_nas: Montando R: → \\10.71.11.41\RAW_NAS\SW\Destino vía WNet API
+2026-05-13T08:06:51.037373Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: montada correctamente
+2026-05-13T08:06:51.037555Z  INFO ThreadId(03) sincronia::orchestrator: NAS montado con credenciales
+2026-05-13T08:06:51.037721Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Esperando credenciales → NAS disponible
+2026-05-13T08:06:51.037865Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:06:51.066127Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:01.080130Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:01.081639Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:01.081950Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:01.082125Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:01.111105Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:11.126981Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:11.127588Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:11.127699Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:11.127795Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:11.146987Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:21.163924Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:21.166657Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:21.167306Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:21.167708Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:21.191217Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:31.206970Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:31.209581Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:31.210069Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:31.210566Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:31.234309Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:41.249333Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:41.251686Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:41.252389Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:41.252938Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:41.274163Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:07:51.290632Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:07:51.293136Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:07:51.293774Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:07:51.294265Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:07:51.343796Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Copiando
+2026-05-13T08:07:51.345058Z  INFO ThreadId(03) sincronia::orchestrator: ═══ Ciclo 20260513_cycle_1 — 250 archivos estables, 250 trabajos ═══
+2026-05-13T08:07:51.345746Z  INFO ThreadId(03) sincronia::scheduler: 8 workers iniciados con buffer de 16 MiB cada uno
+2026-05-13T08:07:51.348666Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:New Text Document.txt)
+2026-05-13T08:07:51.348782Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-14.csv)
+2026-05-13T08:07:51.348886Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-20.csv)
+2026-05-13T08:07:51.348896Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:New Microsoft Word Document.docx)
+2026-05-13T08:07:51.355784Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:New Microsoft Word Document.docx
+2026-05-13T08:07:51.356043Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:New Text Document.txt
+2026-05-13T08:07:51.382523Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-20.csv
+2026-05-13T08:07:51.384495Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\LINEACONFIG.TXT vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\LINEACONFIG.TXT.partial
+2026-05-13T08:07:51.399156Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-14.csv
+2026-05-13T08:07:51.405774Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\eliminados_2026-01-13.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\eliminados_2026-01-13.csv.partial
+2026-05-13T08:07:51.407510Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\LALINEA.txt vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\LALINEA.txt.partial
+2026-05-13T08:07:51.439362Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-16.csv)
+2026-05-13T08:07:51.446188Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\EJECUCION.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\EJECUCION.bat.partial
+2026-05-13T08:07:51.450681Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\excel.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\excel.bat.partial
+2026-05-13T08:07:51.465097Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\README.md)
+2026-05-13T08:07:51.468089Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\TEST.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\TEST.bat.partial
+2026-05-13T08:07:51.468339Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\treesize.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\treesize.bat.partial
+2026-05-13T08:07:51.468381Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\set CATALOGO_HOY=%BASE_DIR%catalogo.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\set CATALOGO_HOY=%BASE_DIR%catalogo.bat.partial
+2026-05-13T08:07:51.468420Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\comparar_catalogos.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\comparar_catalogos.ps1.partial
+2026-05-13T08:07:51.471506Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-16.csv
+2026-05-13T08:07:51.478894Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\CrearCatalogo.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\CrearCatalogo.bat.partial
+2026-05-13T08:07:51.484379Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\EXCEL.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\EXCEL.ps1.partial
+2026-05-13T08:07:51.500256Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\README.md
+2026-05-13T08:07:51.519529Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\OrquestadorDiario.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\OrquestadorDiario.bat.partial
+2026-05-13T08:07:51.522619Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\EXCEL.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\EXCEL.bat.partial
+2026-05-13T08:07:51.533631Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\comparar_catalogos.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\comparar_catalogos.bat.partial
+2026-05-13T08:07:51.533631Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\CompararCatalogos.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\CompararCatalogos.bat.partial
+2026-05-13T08:07:51.536040Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\FiltrarExcel.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\FiltrarExcel.bat.partial
+2026-05-13T08:07:51.539371Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\FiltraNegativos.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\FiltraNegativos.ps1.partial
+2026-05-13T08:07:51.557853Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\TODOJUNTO.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\TODOJUNTO.ps1.partial
+2026-05-13T08:07:51.586844Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:backup.ps1)
+2026-05-13T08:07:51.587035Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\DEFINITIVO3.PS1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\DEFINITIVO3.PS1.partial
+2026-05-13T08:07:51.587192Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FINAL.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FINAL.ps1.partial
+2026-05-13T08:07:51.587658Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\ProcesoDiario.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\ProcesoDiario.bat.partial
+2026-05-13T08:07:51.604597Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:backup.ps1
+2026-05-13T08:07:51.605375Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\TODOJUNTOSERVER.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\TODOJUNTOSERVER.ps1.partial
+2026-05-13T08:07:51.612803Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FINAL1.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FINAL1.ps1.partial
+2026-05-13T08:07:51.630661Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\backup.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\backup.ps1.partial
+2026-05-13T08:07:51.649585Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-21.csv)
+2026-05-13T08:07:51.682749Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\ProcesoDiario.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Scripts-14-01\ProcesoDiario.ps1.partial
+2026-05-13T08:07:51.683364Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\Los ultimos\DEFINITIVO.bat vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\Los ultimos\DEFINITIVO.bat.partial
+2026-05-13T08:07:51.683397Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\Los ultimos\DEFINITIVO.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\Los ultimos\DEFINITIVO.ps1.partial
+2026-05-13T08:07:51.698776Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\DEFINITIVO.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\DEFINITIVO.ps1.partial
+2026-05-13T08:07:51.704506Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:COPIA DE LOS BUENOS\DEFINITIVO.ps1)
+2026-05-13T08:07:51.705155Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\DEFINITIVO.ps1)
+2026-05-13T08:07:51.706455Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FiltraNegativos.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\FiltraNegativos.ps1.partial
+2026-05-13T08:07:51.707371Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-22.csv)
+2026-05-13T08:07:51.726025Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-15.xlsx vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-15.xlsx.partial
+2026-05-13T08:07:51.728793Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-21.csv
+2026-05-13T08:07:51.730497Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-15.csv)
+2026-05-13T08:07:51.749711Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:klkmanin.txt)
+2026-05-13T08:07:51.753933Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\TreeSize.ps1 vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\TreeSize.ps1.partial
+2026-05-13T08:07:51.754745Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-09.csv)
+2026-05-13T08:07:51.770381Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-22.csv
+2026-05-13T08:07:51.770486Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\DEFINITIVO.ps1
+2026-05-13T08:07:51.771008Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:COPIA DE LOS BUENOS\DEFINITIVO.ps1
+2026-05-13T08:07:51.784370Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-15.csv
+2026-05-13T08:07:51.800460Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:klkmanin.txt
+2026-05-13T08:07:52.043852Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-01-23.csv)
+2026-05-13T08:07:52.145686Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_.csv.partial
+2026-05-13T08:07:52.145915Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-14.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-14.csv.partial
+2026-05-13T08:07:52.148667Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-06.xml.zip vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-06.xml.zip.partial
+2026-05-13T08:07:52.149988Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-08.xml.zip vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-08.xml.zip.partial
+2026-05-13T08:07:52.153779Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\DIFERENCIAS_NEGATIVAS_2026-04-09.csv
+2026-05-13T08:07:52.236288Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-02-01.csv)
+2026-05-13T08:07:52.312079Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-07.xml.zip vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\Catalogo_2026-01-07.xml.zip.partial
+2026-05-13T08:07:53.091605Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-14.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-14.csv.partial
+2026-05-13T08:07:54.143612Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-01.csv)
+2026-05-13T08:07:54.143674Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-03-01.csv)
+2026-05-13T08:07:54.579408Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-01-23.csv
+2026-05-13T08:07:54.688025Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-05.csv)
+2026-05-13T08:07:54.786997Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-04.csv)
+2026-05-13T08:07:54.838869Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-03.csv)
+2026-05-13T08:07:54.959034Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-06.csv)
+2026-05-13T08:07:54.960982Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-02-01.csv
+2026-05-13T08:07:54.966987Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-02.csv)
+2026-05-13T08:07:54.970727Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-07.csv)
+2026-05-13T08:07:59.296195Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-01.csv
+2026-05-13T08:07:59.445685Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-05.csv
+2026-05-13T08:07:59.496594Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-03-01.csv
+2026-05-13T08:07:59.903577Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-03.csv
+2026-05-13T08:08:00.052607Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-08.csv)
+2026-05-13T08:08:00.129470Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-09.csv)
+2026-05-13T08:08:00.278508Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-10.csv)
+2026-05-13T08:08:00.468076Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-14.csv)
+2026-05-13T08:08:00.639786Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-04.csv
+2026-05-13T08:08:00.876648Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-02.csv
+2026-05-13T08:08:00.913145Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-06.csv
+2026-05-13T08:08:00.990663Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-15.csv)
+2026-05-13T08:08:00.997536Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-16.csv)
+2026-05-13T08:08:00.998047Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-16.csv)
+2026-05-13T08:08:00.998453Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-07.csv
+2026-05-13T08:08:01.278654Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-17.csv)
+2026-05-13T08:08:05.192661Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-08.csv
+2026-05-13T08:08:05.244431Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-09.csv
+2026-05-13T08:08:05.416881Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-10.csv
+2026-05-13T08:08:05.745547Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-14.csv
+2026-05-13T08:08:06.204362Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-19.csv)
+2026-05-13T08:08:06.205021Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-18.csv)
+2026-05-13T08:08:06.252212Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-20.csv)
+2026-05-13T08:08:06.385584Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-20.csv)
+2026-05-13T08:08:07.071228Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-16.csv
+2026-05-13T08:08:07.143052Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-15.csv
+2026-05-13T08:08:07.259766Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-16.csv
+2026-05-13T08:08:07.440026Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-22.csv)
+2026-05-13T08:08:07.440049Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-22.csv)
+2026-05-13T08:08:07.606035Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-28.csv)
+2026-05-13T08:08:07.710283Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-17.csv
+2026-05-13T08:08:08.202177Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-30.csv)
+2026-05-13T08:08:11.790901Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-19.csv
+2026-05-13T08:08:11.880981Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-18.csv
+2026-05-13T08:08:11.971028Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-20.csv
+2026-05-13T08:08:11.987464Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-20.csv
+2026-05-13T08:08:12.875734Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-01.csv)
+2026-05-13T08:08:12.875711Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-05.csv)
+2026-05-13T08:08:12.875711Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-03.csv)
+2026-05-13T08:08:12.875777Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-02.csv)
+2026-05-13T08:08:13.801815Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-22.csv
+2026-05-13T08:08:13.828713Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-22.csv
+2026-05-13T08:08:13.892976Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-28.csv
+2026-05-13T08:08:13.934895Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1004.exr)
+2026-05-13T08:08:13.934883Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-07.csv)
+2026-05-13T08:08:13.952717Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1001.exr)
+2026-05-13T08:08:14.448174Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-30.csv
+2026-05-13T08:08:15.029287Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1002.exr)
+2026-05-13T08:08:18.475700Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-02.csv
+2026-05-13T08:08:18.564069Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-05.csv
+2026-05-13T08:08:18.612831Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-03.csv
+2026-05-13T08:08:18.664829Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-01.csv
+2026-05-13T08:08:19.135698Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1003.exr)
+2026-05-13T08:08:19.135698Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1009.exr)
+2026-05-13T08:08:19.179844Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1006.exr)
+2026-05-13T08:08:19.224847Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1005.exr)
+2026-05-13T08:08:19.951697Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-07.csv
+2026-05-13T08:08:20.408561Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1007.exr)
+2026-05-13T08:08:23.021019Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1001.exr
+2026-05-13T08:08:23.021019Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1004.exr
+2026-05-13T08:08:23.908355Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1011.exr)
+2026-05-13T08:08:24.102983Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1008.exr)
+2026-05-13T08:08:24.258581Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1002.exr
+2026-05-13T08:08:24.544330Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1009.exr
+2026-05-13T08:08:24.727151Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1006.exr
+2026-05-13T08:08:24.775458Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1012.exr)
+2026-05-13T08:08:24.991045Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1014.exr)
+2026-05-13T08:08:25.182358Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1010.exr)
+2026-05-13T08:08:26.510949Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1007.exr
+2026-05-13T08:08:27.410291Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1013.exr)
+2026-05-13T08:08:28.098209Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1003.exr
+2026-05-13T08:08:28.351708Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1005.exr
+2026-05-13T08:08:28.743025Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1016.exr)
+2026-05-13T08:08:29.104238Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1015.exr)
+2026-05-13T08:08:29.761370Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1011.exr
+2026-05-13T08:08:29.897688Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1008.exr
+2026-05-13T08:08:30.704404Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1019.exr)
+2026-05-13T08:08:30.704404Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1017.exr)
+2026-05-13T08:08:30.953341Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1012.exr
+2026-05-13T08:08:30.981388Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1014.exr
+2026-05-13T08:08:31.573060Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1022.exr)
+2026-05-13T08:08:31.655640Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1021.exr)
+2026-05-13T08:08:32.155759Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1010.exr
+2026-05-13T08:08:32.771690Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1018.exr)
+2026-05-13T08:08:33.623523Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1013.exr
+2026-05-13T08:08:35.000610Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1016.exr
+2026-05-13T08:08:35.017314Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1020.exr)
+2026-05-13T08:08:35.432131Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1015.exr
+2026-05-13T08:08:35.804532Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1024.exr)
+2026-05-13T08:08:36.133475Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1023.exr)
+2026-05-13T08:08:36.958701Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1019.exr
+2026-05-13T08:08:37.171625Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1017.exr
+2026-05-13T08:08:37.771886Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1029.exr)
+2026-05-13T08:08:37.958853Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1026.exr)
+2026-05-13T08:08:38.288991Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1021.exr
+2026-05-13T08:08:38.612782Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1022.exr
+2026-05-13T08:08:38.995557Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1031.exr)
+2026-05-13T08:08:39.274995Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1028.exr)
+2026-05-13T08:08:39.853929Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1018.exr
+2026-05-13T08:08:40.575846Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1027.exr)
+2026-05-13T08:08:41.417684Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1020.exr
+2026-05-13T08:08:42.151607Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1024.exr
+2026-05-13T08:08:42.544891Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1034.exr)
+2026-05-13T08:08:42.549259Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1023.exr
+2026-05-13T08:08:42.991928Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1032.exr)
+2026-05-13T08:08:43.305153Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1025.exr)
+2026-05-13T08:08:44.002938Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1029.exr
+2026-05-13T08:08:44.663292Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1026.exr
+2026-05-13T08:08:45.128210Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1030.exr)
+2026-05-13T08:08:45.438663Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1064.exr)
+2026-05-13T08:08:45.597242Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1031.exr
+2026-05-13T08:08:45.961549Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1028.exr
+2026-05-13T08:08:46.175545Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1036.exr)
+2026-05-13T08:08:46.524083Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1059.exr)
+2026-05-13T08:08:46.973458Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1027.exr
+2026-05-13T08:08:47.483221Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1039.exr)
+2026-05-13T08:08:48.446561Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1032.exr
+2026-05-13T08:08:48.793540Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1025.exr
+2026-05-13T08:08:49.057832Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1037.exr)
+2026-05-13T08:08:49.358546Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1041.exr)
+2026-05-13T08:08:50.663161Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1030.exr
+2026-05-13T08:08:51.429965Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1054.exr)
+2026-05-13T08:08:51.741791Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1034.exr
+2026-05-13T08:08:52.335628Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1046.exr)
+2026-05-13T08:08:54.873350Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1064.exr
+2026-05-13T08:08:55.297362Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1037.exr
+2026-05-13T08:08:55.560403Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1036.exr
+2026-05-13T08:08:55.797430Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1041.exr
+2026-05-13T08:08:55.946330Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1059.exr
+2026-05-13T08:08:55.986597Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1062.exr)
+2026-05-13T08:08:55.986603Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1044.exr)
+2026-05-13T08:08:55.986597Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1052.exr)
+2026-05-13T08:08:56.183659Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1047.exr)
+2026-05-13T08:08:56.313181Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1056.exr)
+2026-05-13T08:08:56.549738Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1039.exr
+2026-05-13T08:08:56.978602Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1035.exr)
+2026-05-13T08:08:57.196666Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1054.exr
+2026-05-13T08:08:58.579395Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1042.exr)
+2026-05-13T08:08:58.667249Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1046.exr
+2026-05-13T08:08:59.647644Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1057.exr)
+2026-05-13T08:09:02.513581Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1062.exr
+2026-05-13T08:09:02.586988Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1044.exr
+2026-05-13T08:09:02.799993Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1047.exr
+2026-05-13T08:09:03.271020Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1067.exr)
+2026-05-13T08:09:03.273395Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1052.exr
+2026-05-13T08:09:03.333600Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1066.exr)
+2026-05-13T08:09:03.525712Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1072.exr)
+2026-05-13T08:09:03.756853Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1056.exr
+2026-05-13T08:09:03.920491Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1043.exr)
+2026-05-13T08:09:04.158742Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1033.exr)
+2026-05-13T08:09:04.680377Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1035.exr
+2026-05-13T08:09:05.317127Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1061.exr)
+2026-05-13T08:09:05.402206Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1042.exr
+2026-05-13T08:09:06.224609Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1057.exr
+2026-05-13T08:09:06.519696Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1058.exr)
+2026-05-13T08:09:06.845448Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1049.exr)
+2026-05-13T08:09:09.216800Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1067.exr
+2026-05-13T08:09:09.320774Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1066.exr
+2026-05-13T08:09:09.808121Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1043.exr
+2026-05-13T08:09:09.990628Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1051.exr)
+2026-05-13T08:09:09.990628Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1074.exr)
+2026-05-13T08:09:10.147519Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1033.exr
+2026-05-13T08:09:10.331839Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1071.exr)
+2026-05-13T08:09:10.614872Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1038.exr)
+2026-05-13T08:09:12.009780Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1072.exr
+2026-05-13T08:09:12.127410Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1049.exr
+2026-05-13T08:09:12.579785Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1069.exr)
+2026-05-13T08:09:12.678436Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1040.exr)
+2026-05-13T08:09:14.098075Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1061.exr
+2026-05-13T08:09:14.562628Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1053.exr)
+2026-05-13T08:09:14.890700Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1058.exr
+2026-05-13T08:09:15.461153Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1077.exr)
+2026-05-13T08:09:17.542574Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1051.exr
+2026-05-13T08:09:17.689016Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1074.exr
+2026-05-13T08:09:18.000521Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1071.exr
+2026-05-13T08:09:18.191623Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1038.exr
+2026-05-13T08:09:18.340200Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1055.exr)
+2026-05-13T08:09:18.340206Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1063.exr)
+2026-05-13T08:09:18.340233Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1048.exr)
+2026-05-13T08:09:18.566687Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1129.exr)
+2026-05-13T08:09:19.771913Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1069.exr
+2026-05-13T08:09:19.922953Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1040.exr
+2026-05-13T08:09:20.284049Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1079.exr)
+2026-05-13T08:09:20.489772Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1060.exr)
+2026-05-13T08:09:22.075168Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1053.exr
+2026-05-13T08:09:22.531356Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1073.exr)
+2026-05-13T08:09:23.075900Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1077.exr
+2026-05-13T08:09:23.664768Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1045.exr)
+2026-05-13T08:09:25.912280Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1063.exr
+2026-05-13T08:09:25.912280Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1048.exr
+2026-05-13T08:09:25.951367Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1055.exr
+2026-05-13T08:09:26.138663Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1129.exr
+2026-05-13T08:09:26.253431Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1068.exr)
+2026-05-13T08:09:26.253461Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1081.exr)
+2026-05-13T08:09:26.313104Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1084.exr)
+2026-05-13T08:09:26.507128Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1050.exr)
+2026-05-13T08:09:27.805302Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1079.exr
+2026-05-13T08:09:27.958650Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1060.exr
+2026-05-13T08:09:28.903194Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1082.exr)
+2026-05-13T08:09:28.903228Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1076.exr)
+2026-05-13T08:09:29.895776Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1073.exr
+2026-05-13T08:09:30.381491Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1124.exr)
+2026-05-13T08:09:30.923580Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1045.exr
+2026-05-13T08:09:31.549910Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1099.exr)
+2026-05-13T08:09:33.957798Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1081.exr
+2026-05-13T08:09:34.105908Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1068.exr
+2026-05-13T08:09:34.105908Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1084.exr
+2026-05-13T08:09:34.287716Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1050.exr
+2026-05-13T08:09:34.412760Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1070.exr)
+2026-05-13T08:09:34.532489Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1065.exr)
+2026-05-13T08:09:34.532504Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1114.exr)
+2026-05-13T08:09:34.737217Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1087.exr)
+2026-05-13T08:09:35.555919Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1124.exr
+2026-05-13T08:09:36.018642Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1091.exr)
+2026-05-13T08:09:36.716308Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1099.exr
+2026-05-13T08:09:37.013903Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1082.exr
+2026-05-13T08:09:37.147751Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1076.exr
+2026-05-13T08:09:37.219649Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1104.exr)
+2026-05-13T08:09:37.421121Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1078.exr)
+2026-05-13T08:09:37.579309Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1126.exr)
+2026-05-13T08:09:39.182923Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1114.exr
+2026-05-13T08:09:40.507393Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1119.exr)
+2026-05-13T08:09:42.610598Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1070.exr
+2026-05-13T08:09:42.751711Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1065.exr
+2026-05-13T08:09:42.754336Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1104.exr
+2026-05-13T08:09:42.977282Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1087.exr
+2026-05-13T08:09:43.059572Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1089.exr)
+2026-05-13T08:09:43.184848Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1086.exr)
+2026-05-13T08:09:43.184849Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1116.exr)
+2026-05-13T08:09:43.402019Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1121.exr)
+2026-05-13T08:09:44.346156Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1091.exr
+2026-05-13T08:09:44.837492Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1107.exr)
+2026-05-13T08:09:45.860690Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1119.exr
+2026-05-13T08:09:46.046518Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1078.exr
+2026-05-13T08:09:46.046518Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1126.exr
+2026-05-13T08:09:46.410582Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1080.exr)
+2026-05-13T08:09:46.649512Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1092.exr)
+2026-05-13T08:09:46.649512Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1094.exr)
+2026-05-13T08:09:48.399053Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1116.exr
+2026-05-13T08:09:48.544084Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1121.exr
+2026-05-13T08:09:48.942914Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1122.exr)
+2026-05-13T08:09:49.174308Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1101.exr)
+2026-05-13T08:09:50.496903Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1107.exr
+2026-05-13T08:09:51.782015Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1089.exr
+2026-05-13T08:09:51.854447Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1097.exr)
+2026-05-13T08:09:52.048713Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1086.exr
+2026-05-13T08:09:52.342247Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1128.exr)
+2026-05-13T08:09:52.561989Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1127.exr)
+2026-05-13T08:09:52.564686Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1094.exr
+2026-05-13T08:09:53.107773Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1102.exr)
+2026-05-13T08:09:54.778667Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1122.exr
+2026-05-13T08:09:55.323934Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1101.exr
+2026-05-13T08:09:55.621169Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1075.exr)
+2026-05-13T08:09:55.771688Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1080.exr
+2026-05-13T08:09:55.914364Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1109.exr)
+2026-05-13T08:09:56.030732Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1092.exr
+2026-05-13T08:09:56.179213Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1111.exr)
+2026-05-13T08:09:56.507588Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1106.exr)
+2026-05-13T08:09:57.550612Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1097.exr
+2026-05-13T08:09:58.336965Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1112.exr)
+2026-05-13T08:09:58.457939Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1127.exr
+2026-05-13T08:09:59.269373Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1102.exr
+2026-05-13T08:09:59.477134Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1083.exr)
+2026-05-13T08:10:00.019170Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1096.exr)
+2026-05-13T08:10:02.787774Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1075.exr
+2026-05-13T08:10:02.925530Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1109.exr
+2026-05-13T08:10:03.069359Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1128.exr
+2026-05-13T08:10:03.213734Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1111.exr
+2026-05-13T08:10:03.640799Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1106.exr
+2026-05-13T08:10:03.925350Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1117.exr)
+2026-05-13T08:10:03.925372Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1088.exr)
+2026-05-13T08:10:03.925380Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1098.exr)
+2026-05-13T08:10:03.925386Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1120.exr)
+2026-05-13T08:10:04.069704Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1103.exr)
+2026-05-13T08:10:05.396320Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1112.exr
+2026-05-13T08:10:06.224594Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1093.exr)
+2026-05-13T08:10:06.227744Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1083.exr
+2026-05-13T08:10:06.448681Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1096.exr
+2026-05-13T08:10:07.003769Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1090.exr)
+2026-05-13T08:10:07.124222Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1123.exr)
+2026-05-13T08:10:10.219234Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1120.exr
+2026-05-13T08:10:10.434471Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1117.exr
+2026-05-13T08:10:10.502252Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1103.exr
+2026-05-13T08:10:10.600946Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1098.exr
+2026-05-13T08:10:11.007116Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1085.exr)
+2026-05-13T08:10:11.125634Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1105.exr)
+2026-05-13T08:10:11.183616Z  INFO ThreadId(07) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1113.exr)
+2026-05-13T08:10:11.328912Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1108.exr)
+2026-05-13T08:10:11.605456Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1088.exr
+2026-05-13T08:10:12.020843Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1118.exr)
+2026-05-13T08:10:13.013822Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1093.exr
+2026-05-13T08:10:13.754256Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1123.exr
+2026-05-13T08:10:13.897873Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1090.exr
+2026-05-13T08:10:14.110503Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1125.exr)
+2026-05-13T08:10:15.227786Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1095.exr)
+2026-05-13T08:10:15.227774Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1110.exr)
+2026-05-13T08:10:17.562695Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1105.exr
+2026-05-13T08:10:17.593627Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1085.exr
+2026-05-13T08:10:18.012620Z  INFO ThreadId(07) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1113.exr
+2026-05-13T08:10:18.079274Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1108.exr
+2026-05-13T08:10:18.259683Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1100.exr)
+2026-05-13T08:10:18.331297Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:ERO_QAC_FAMILIA_SHOT_010_V01.1115.exr)
+2026-05-13T08:10:19.350500Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1118.exr
+2026-05-13T08:10:22.010407Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1125.exr
+2026-05-13T08:10:23.209018Z  INFO ThreadId(08) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-13.csv)
+2026-05-13T08:10:23.738876Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1110.exr
+2026-05-13T08:10:24.082375Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1095.exr
+2026-05-13T08:10:24.364913Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-21.csv)
+2026-05-13T08:10:24.364963Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\comparacion_2026-01-09.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\comparacion_2026-01-09.csv.partial
+2026-05-13T08:10:24.507447Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-09.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-09.csv.partial
+2026-05-13T08:10:24.507447Z  INFO ThreadId(09) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-04.csv)
+2026-05-13T08:10:25.089598Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-13.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\comparacion_2026-01-13.csv.partial
+2026-05-13T08:10:25.945164Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1115.exr
+2026-05-13T08:10:26.056482Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:ERO_QAC_FAMILIA_SHOT_010_V01.1100.exr
+2026-05-13T08:10:26.868930Z  INFO ThreadId(13) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-06.csv)
+2026-05-13T08:10:35.655761Z  INFO ThreadId(08) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-13.csv
+2026-05-13T08:10:36.048847Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-09.txt vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-09.txt.partial
+2026-05-13T08:10:36.455303Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-21.csv
+2026-05-13T08:10:36.846581Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-21.csv)
+2026-05-13T08:10:36.846577Z  INFO ThreadId(12) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-14.csv)
+2026-05-13T08:10:37.157346Z  INFO ThreadId(09) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-04.csv
+2026-05-13T08:10:42.239463Z  INFO ThreadId(13) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-06.csv
+2026-05-13T08:10:47.102614Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-07.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-07.xml.partial
+2026-05-13T08:10:47.259433Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-08.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-08.xml.partial
+2026-05-13T08:10:49.643297Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-13.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-13.csv.partial
+2026-05-13T08:10:49.893597Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-13.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-13.csv.partial
+2026-05-13T08:10:53.415769Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-09.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-09.csv.partial
+2026-05-13T08:10:55.968425Z  INFO ThreadId(12) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-14.csv
+2026-05-13T08:10:56.280465Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-21.csv
+2026-05-13T08:10:56.887445Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-15.csv)
+2026-05-13T08:11:05.371969Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-15.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-15.csv.partial
+2026-05-13T08:11:14.962500Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-15.csv
+2026-05-13T08:11:21.405930Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-09.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-09.xml.partial
+2026-05-13T08:11:21.495432Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-10.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-10.xml.partial
+2026-05-13T08:11:23.250815Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-10.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-10.xml.partial
+2026-05-13T08:11:27.989177Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-15.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-15.xml.partial
+2026-05-13T08:11:33.770335Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-12.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-12.xml.partial
+2026-05-13T08:11:33.842818Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-11.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-11.xml.partial
+2026-05-13T08:11:43.038605Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-12-cambiadopor9.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-12-cambiadopor9.xml.partial
+2026-05-13T08:11:43.048026Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-11.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-11.xml.partial
+2026-05-13T08:12:06.596705Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-13.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-13.xml.partial
+2026-05-13T08:12:06.646081Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-13.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\catalogo_2026-01-13.xml.partial
+2026-05-13T08:12:07.659490Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-12.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-12.xml.partial
+2026-05-13T08:12:09.005620Z  INFO ThreadId(11) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-05-11.csv)
+2026-05-13T08:12:10.931025Z  INFO ThreadId(10) sincronia::conflict: Comparando hash de origen y destino existente (R:Catalogo_2026-04-27.csv)
+2026-05-13T08:12:18.227799Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-14.xml vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\catalogo_2026-01-14.xml.partial
+2026-05-13T08:12:29.370875Z  INFO ThreadId(11) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-05-11.csv
+2026-05-13T08:12:39.210688Z  INFO ThreadId(10) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:Catalogo_2026-04-27.csv
+2026-05-13T08:12:43.639677Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-12.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-12.csv.partial
+2026-05-13T08:12:53.049095Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-11.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-11.csv.partial
+2026-05-13T08:13:00.137556Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-10.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\1Backup\listado_2026-01-10.csv.partial
+2026-05-13T08:13:00.332059Z  INFO ThreadId(06) sincronia::conflict: Comparando hash de origen y destino existente (R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-09.csv)
+2026-05-13T08:13:01.467976Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-09.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-09.csv.partial
+2026-05-13T08:13:31.865111Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-12.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-12.csv.partial
+2026-05-13T08:13:34.134745Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-11.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-11.csv.partial
+2026-05-13T08:13:51.837857Z  INFO ThreadId(06) sincronia::conflict: Hash idéntico — marcado como ya respaldado: R:CSV2\Testpequenos\OneDriveDestino\Catalogo_2026-04-09.csv
+2026-05-13T08:13:53.748705Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-10.csv vs R:COPIA DE LOS BUENOS\ANTES DE REVENTAR EL PC\OLD\listado_2026-01-10.csv.partial
+2026-05-13T08:14:13.243374Z  INFO ThreadId(03) sincronia::scheduler: Pool de workers detenido
+2026-05-13T08:14:13.244274Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Copiando → Inactivo
+2026-05-13T08:14:13.244536Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Parando
+2026-05-13T08:14:13.244677Z  INFO ThreadId(03) sincronia::orchestrator: Parada ordenada solicitada — saliendo del loop principal
+2026-05-13T08:14:13.244790Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Parando → Parado
+2026-05-13T08:14:13.245018Z  INFO ThreadId(03) sincronia::orchestrator: ═══ Sincronia Orchestrator detenido ═══
+2026-05-13T08:40:17.058377Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Cargando configuración → Validando configuración
+2026-05-13T08:40:17.058612Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Validando configuración → Comprobando NAS
+2026-05-13T08:40:17.064030Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:40:17.064263Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:40:17.064422Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:40:17.072353Z  INFO ThreadId(01) sincronia::tray: Icono de bandeja creado correctamente
+2026-05-13T08:40:17.075460Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:40:27.086962Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:40:27.087884Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:40:27.088096Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:40:27.088245Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:40:27.095976Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:40:37.108013Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:40:37.108958Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:40:37.109126Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:40:37.109254Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:40:37.117296Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:40:47.129210Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:40:47.129760Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:40:47.129895Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:40:47.130137Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:40:47.137679Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:40:57.149422Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:40:57.150026Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:40:57.150159Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:40:57.150388Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:40:57.157785Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:41:07.171089Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:41:07.171926Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:41:07.172057Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:41:07.172301Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:41:07.179974Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Inactivo
+2026-05-13T08:41:17.192132Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Comprobando NAS
+2026-05-13T08:41:17.192850Z  INFO ThreadId(03) sincronia::windows_nas: Unidad R: correctamente mapeada a \\10.71.11.41\RAW_NAS\SW\Destino
+2026-05-13T08:41:17.193032Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Comprobando NAS → NAS disponible
+2026-05-13T08:41:17.193168Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: NAS disponible → Escaneando
+2026-05-13T08:41:17.247328Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Escaneando → Copiando
+2026-05-13T08:41:17.248734Z  INFO ThreadId(03) sincronia::orchestrator: ═══ Ciclo 20260513_cycle_1 — 69 archivos estables, 69 trabajos ═══
+2026-05-13T08:41:17.249423Z  INFO ThreadId(03) sincronia::scheduler: 8 workers iniciados con buffer de 16 MiB cada uno
+2026-05-13T08:41:17.302329Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\refs\remotes\origin\HEAD vs R:sync-robocopy\.git\refs\remotes\origin\HEAD.partial
+2026-05-13T08:41:17.306308Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\HEAD vs R:sync-robocopy\.git\HEAD.partial
+2026-05-13T08:41:17.323420Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\description vs R:sync-robocopy\.git\description.partial
+2026-05-13T08:41:17.333211Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\ORIG_HEAD vs R:sync-robocopy\.git\ORIG_HEAD.partial
+2026-05-13T08:41:17.342148Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\COMMIT_EDITMSG vs R:sync-robocopy\.git\COMMIT_EDITMSG.partial
+2026-05-13T08:41:17.347723Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\logs\refs\remotes\origin\HEAD vs R:sync-robocopy\.git\logs\refs\remotes\origin\HEAD.partial
+2026-05-13T08:41:17.347723Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\FETCH_HEAD vs R:sync-robocopy\.git\FETCH_HEAD.partial
+2026-05-13T08:41:17.348089Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\refs\remotes\origin\main vs R:sync-robocopy\.git\refs\remotes\origin\main.partial
+2026-05-13T08:41:17.354653Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\67\08ce55dc763fc517be5de7f75b3aa2938120f1 vs R:sync-robocopy\.git\objects\67\08ce55dc763fc517be5de7f75b3aa2938120f1.partial
+2026-05-13T08:41:17.354649Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\refs\heads\main vs R:sync-robocopy\.git\refs\heads\main.partial
+2026-05-13T08:41:17.354649Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\post-update.sample vs R:sync-robocopy\.git\hooks\post-update.sample.partial
+2026-05-13T08:41:17.363097Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\1b\a01e82ebd656bf96f0f81f714d51a699cf97d2 vs R:sync-robocopy\.git\objects\1b\a01e82ebd656bf96f0f81f714d51a699cf97d2.partial
+2026-05-13T08:41:17.376450Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\info\exclude vs R:sync-robocopy\.git\info\exclude.partial
+2026-05-13T08:41:17.458981Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\logs\refs\remotes\origin\main vs R:sync-robocopy\.git\logs\refs\remotes\origin\main.partial
+2026-05-13T08:41:17.458981Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\a3\ddd95f60e8a98bfa0afd92e9bc6d7034831137 vs R:sync-robocopy\.git\objects\a3\ddd95f60e8a98bfa0afd92e9bc6d7034831137.partial
+2026-05-13T08:41:17.458994Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\config vs R:sync-robocopy\.git\config.partial
+2026-05-13T08:41:17.459005Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\logs\HEAD vs R:sync-robocopy\.git\logs\HEAD.partial
+2026-05-13T08:41:17.460982Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\logs\refs\heads\main vs R:sync-robocopy\.git\logs\refs\heads\main.partial
+2026-05-13T08:41:17.461301Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-merge-commit.sample vs R:sync-robocopy\.git\hooks\pre-merge-commit.sample.partial
+2026-05-13T08:41:17.468543Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-applypatch.sample vs R:sync-robocopy\.git\hooks\pre-applypatch.sample.partial
+2026-05-13T08:41:17.487778Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\12\b0d434191ac6dcc8a3837461220f8c0843ce10 vs R:sync-robocopy\.git\objects\12\b0d434191ac6dcc8a3837461220f8c0843ce10.partial
+2026-05-13T08:41:17.516509Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\applypatch-msg.sample vs R:sync-robocopy\.git\hooks\applypatch-msg.sample.partial
+2026-05-13T08:41:17.524204Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-receive.sample vs R:sync-robocopy\.git\hooks\pre-receive.sample.partial
+2026-05-13T08:41:17.524204Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\prepare-commit-msg.sample vs R:sync-robocopy\.git\hooks\prepare-commit-msg.sample.partial
+2026-05-13T08:41:17.524200Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-push.sample vs R:sync-robocopy\.git\hooks\pre-push.sample.partial
+2026-05-13T08:41:17.524213Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\index vs R:sync-robocopy\.git\index.partial
+2026-05-13T08:41:17.524253Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\commit-msg.sample vs R:sync-robocopy\.git\hooks\commit-msg.sample.partial
+2026-05-13T08:41:17.533652Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-commit.sample vs R:sync-robocopy\.git\hooks\pre-commit.sample.partial
+2026-05-13T08:41:17.599993Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\sendemail-validate.sample vs R:sync-robocopy\.git\hooks\sendemail-validate.sample.partial
+2026-05-13T08:41:17.602048Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\0c\520d3140f9e650d32e50b8585bd11c58b3ea05 vs R:sync-robocopy\.git\objects\0c\520d3140f9e650d32e50b8585bd11c58b3ea05.partial
+2026-05-13T08:41:17.602054Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\17\cd87398d90ea95489237d6cb7a6150e5689608 vs R:sync-robocopy\.git\objects\17\cd87398d90ea95489237d6cb7a6150e5689608.partial
+2026-05-13T08:41:17.602076Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\5b\64ad847bfac26de2ef05b4f4f4168e8585738e vs R:sync-robocopy\.git\objects\5b\64ad847bfac26de2ef05b4f4f4168e8585738e.partial
+2026-05-13T08:41:17.602305Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\d0\508c51ce617948e2f24dadd976900e3f9be55c vs R:sync-robocopy\.git\objects\d0\508c51ce617948e2f24dadd976900e3f9be55c.partial
+2026-05-13T08:41:17.612037Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\update.sample vs R:sync-robocopy\.git\hooks\update.sample.partial
+2026-05-13T08:41:17.630974Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\fsmonitor-watchman.sample vs R:sync-robocopy\.git\hooks\fsmonitor-watchman.sample.partial
+2026-05-13T08:41:17.653243Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\push-to-checkout.sample vs R:sync-robocopy\.git\hooks\push-to-checkout.sample.partial
+2026-05-13T08:41:17.653260Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\prompt-sync-robocopy-2.md vs R:sync-robocopy\prompt-sync-robocopy-2.md.partial
+2026-05-13T08:41:17.653270Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\08\db6612dec870525260ce5e66d492bffd408c1f vs R:sync-robocopy\.git\objects\08\db6612dec870525260ce5e66d492bffd408c1f.partial
+2026-05-13T08:41:17.653280Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\bb\ed9228e17edb064883445e41277d007cabbb3f vs R:sync-robocopy\.git\objects\bb\ed9228e17edb064883445e41277d007cabbb3f.partial
+2026-05-13T08:41:17.653509Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\prompt-sync-robocopy-3.md vs R:sync-robocopy\prompt-sync-robocopy-3.md.partial
+2026-05-13T08:41:17.656381Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\hooks\pre-rebase.sample vs R:sync-robocopy\.git\hooks\pre-rebase.sample.partial
+2026-05-13T08:41:17.686708Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\cd\9a92cc536455a76a9697258ddfd3a081f15799 vs R:sync-robocopy\.git\objects\cd\9a92cc536455a76a9697258ddfd3a081f15799.partial
+2026-05-13T08:41:17.709725Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\93\30156aaa35812bd60e3105ffb0f42825452cd1 vs R:sync-robocopy\.git\objects\93\30156aaa35812bd60e3105ffb0f42825452cd1.partial
+2026-05-13T08:41:17.735042Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\25\65891fc5b5b12887b3d3d6be8d9d49f3dc81bf vs R:sync-robocopy\.git\objects\25\65891fc5b5b12887b3d3d6be8d9d49f3dc81bf.partial
+2026-05-13T08:41:17.735310Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\76\0590f775b28f50b2b3f222e587cdde0f541447 vs R:sync-robocopy\.git\objects\76\0590f775b28f50b2b3f222e587cdde0f541447.partial
+2026-05-13T08:41:17.735783Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\59\6089aa433483e36c3f1bd044a02fc1822c99b2 vs R:sync-robocopy\.git\objects\59\6089aa433483e36c3f1bd044a02fc1822c99b2.partial
+2026-05-13T08:41:17.736567Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\41\29af69711e022b305b15c0c5735664b0e2591e vs R:sync-robocopy\.git\objects\41\29af69711e022b305b15c0c5735664b0e2591e.partial
+2026-05-13T08:41:17.736574Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\Sync-Robocopy.ps1 vs R:sync-robocopy\Sync-Robocopy.ps1.partial
+2026-05-13T08:41:17.739215Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\Sync-Robocopy 0.0.4.ps1 vs R:sync-robocopy\Sync-Robocopy 0.0.4.ps1.partial
+2026-05-13T08:41:17.749547Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\2c\7bd8107631225ce8cfcc0d9e9bbc95aa142879 vs R:sync-robocopy\.git\objects\2c\7bd8107631225ce8cfcc0d9e9bbc95aa142879.partial
+2026-05-13T08:41:17.808968Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.1.ps1 vs R:sync-robocopy-1.0.1.ps1.partial
+2026-05-13T08:41:17.810346Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.0.ps1 vs R:sync-robocopy-1.0.0.ps1.partial
+2026-05-13T08:41:17.810625Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.1.ps1 vs R:sync-robocopy\sync-robocopy-1.0.1.ps1.partial
+2026-05-13T08:41:17.810839Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.2.ps1 vs R:sync-robocopy-1.0.2.ps1.partial
+2026-05-13T08:41:17.810862Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.3.ps1 vs R:sync-robocopy-1.0.3.ps1.partial
+2026-05-13T08:41:17.832843Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.4.ps1 vs R:sync-robocopy-1.0.4.ps1.partial
+2026-05-13T08:41:17.832843Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.3.ps1 vs R:sync-robocopy\sync-robocopy-1.0.3.ps1.partial
+2026-05-13T08:41:17.857683Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\.git\objects\75\9686a19b1975abd048530f5760e97179134c14 vs R:sync-robocopy\.git\objects\75\9686a19b1975abd048530f5760e97179134c14.partial
+2026-05-13T08:41:17.886348Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy-1.0.5.ps1 vs R:sync-robocopy-1.0.5.ps1.partial
+2026-05-13T08:41:17.886344Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.5.ps1 vs R:sync-robocopy\sync-robocopy-1.0.5.ps1.partial
+2026-05-13T08:41:17.886515Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\conversacion-mejora-sinc-robocopy-2.txt vs R:sync-robocopy\conversacion-mejora-sinc-robocopy-2.txt.partial
+2026-05-13T08:41:17.905228Z  INFO ThreadId(13) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\prompt-completo-rust.md vs R:sync-robocopy\prompt-completo-rust.md.partial
+2026-05-13T08:41:17.905243Z  INFO ThreadId(06) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\prompt-sync-robocopy.md vs R:sync-robocopy\prompt-sync-robocopy.md.partial
+2026-05-13T08:41:17.927566Z  INFO ThreadId(07) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.6.ps1 vs R:sync-robocopy\sync-robocopy-1.0.6.ps1.partial
+2026-05-13T08:41:17.927566Z  INFO ThreadId(09) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.7.ps1 vs R:sync-robocopy\sync-robocopy-1.0.7.ps1.partial
+2026-05-13T08:41:17.927571Z  INFO ThreadId(12) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.4.ps1 vs R:sync-robocopy\sync-robocopy-1.0.4.ps1.partial
+2026-05-13T08:41:18.057797Z  INFO ThreadId(11) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\sync-robocopy-1.0.8.ps1 vs R:sync-robocopy\sync-robocopy-1.0.8.ps1.partial
+2026-05-13T08:41:18.073104Z  INFO ThreadId(08) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\sync-robocopy\conversacion-mejora-sinc-robocopy.txt vs R:sync-robocopy\conversacion-mejora-sinc-robocopy.txt.partial
+2026-05-13T08:41:18.083187Z  INFO ThreadId(10) sincronia::verifier: Verificando integridad (Blake3): \\?\C:\Users\locadmin\Desktop\prueba-sincronizacion-carpetas\carpeta-a\rustup-init.exe vs R:rustup-init.exe.partial
+2026-05-13T08:41:19.163536Z  INFO ThreadId(03) sincronia::scheduler: Pool de workers detenido
+2026-05-13T08:41:19.166178Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Copiando → Inactivo
+2026-05-13T08:41:19.166351Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Inactivo → Parando
+2026-05-13T08:41:19.166419Z  INFO ThreadId(03) sincronia::orchestrator: Parada ordenada solicitada — saliendo del loop principal
+2026-05-13T08:41:19.166505Z  INFO ThreadId(03) sincronia::orchestrator: Estado global: Parando → Parado
+2026-05-13T08:41:19.166776Z  INFO ThreadId(03) sincronia::orchestrator: ═══ Sincronia Orchestrator detenido ═══

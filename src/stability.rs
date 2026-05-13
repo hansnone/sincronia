@@ -5,7 +5,7 @@
 // durante minimum_file_stable_seconds.
 
 use crate::scanner::FileEntry;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 use std::time::{Instant, SystemTime};
 use tracing::{debug, trace};
@@ -21,12 +21,42 @@ struct FileObservation {
     first_seen_stable: Instant,
 }
 
+/// Clave de caché para archivos ya respaldados.
+/// Combina ruta relativa + tamaño + mtime para detectar si el archivo cambió.
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+struct BackedUpKey {
+    relative_path: PathBuf,
+    size: u64,
+    /// Epoch en segundos del last_write_time (para poder hacer Hash)
+    mtime_epoch_secs: u64,
+}
+
+impl BackedUpKey {
+    fn from_entry(entry: &FileEntry) -> Self {
+        let mtime_epoch_secs = entry
+            .last_write_time
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .map(|d| d.as_secs())
+            .unwrap_or(0);
+        Self {
+            relative_path: entry.relative_path.clone(),
+            size: entry.size,
+            mtime_epoch_secs,
+        }
+    }
+}
+
 /// Detector de estabilidad basado en observaciones sucesivas
 pub struct StabilityChecker {
     /// Mapa de archivos bajo observación
     observations: HashMap<PathBuf, FileObservation>,
     /// Segundos requeridos sin cambios
     stable_seconds: u64,
+    /// Caché de archivos ya respaldados exitosamente.
+    /// Evita re-hashear archivos idénticos en cada ciclo de escaneo
+    /// (especialmente importante en modo backup_append_only donde
+    /// los archivos permanecen en origen después de respaldarlos).
+    backed_up_cache: HashSet<BackedUpKey>,
 }
 
 impl StabilityChecker {
@@ -38,6 +68,7 @@ impl StabilityChecker {
         Self {
             observations: HashMap::new(),
             stable_seconds: minimum_file_stable_seconds,
+            backed_up_cache: HashSet::new(),
         }
     }
 
@@ -54,6 +85,18 @@ impl StabilityChecker {
 
         for file in files {
             let key = &file.relative_path;
+
+            // Si ya está en la caché de respaldados y no cambió, saltarlo
+            let backed_up_key = BackedUpKey::from_entry(file);
+            if self.backed_up_cache.contains(&backed_up_key) {
+                trace!(
+                    "Archivo en caché de respaldados (saltando): {} (size: {})",
+                    key.display(),
+                    file.size
+                );
+                // No lo contamos como estable ni inestable — simplemente lo ignoramos
+                continue;
+            }
 
             match self.observations.get(key) {
                 Some(obs) => {
@@ -122,10 +165,11 @@ impl StabilityChecker {
             .retain(|k, _| current_paths.contains(k));
 
         debug!(
-            "Estabilidad: {} estables, {} inestables, {} en observación total",
+            "Estabilidad: {} estables, {} inestables, {} en observación, {} en caché de respaldados",
             stable.len(),
             unstable.len(),
-            self.observations.len()
+            self.observations.len(),
+            self.backed_up_cache.len()
         );
 
         (stable, unstable)
@@ -134,6 +178,16 @@ impl StabilityChecker {
     /// Marca un archivo como procesado (elimina de observación)
     pub fn mark_processed(&mut self, relative_path: &PathBuf) {
         self.observations.remove(relative_path);
+    }
+
+    /// Marca un archivo como ya respaldado exitosamente.
+    /// Los archivos en esta caché se omiten en futuros escaneos,
+    /// evitando el costoso re-hasheo de archivos que no han cambiado.
+    pub fn mark_backed_up(&mut self, entry: &FileEntry) {
+        let key = BackedUpKey::from_entry(entry);
+        self.backed_up_cache.insert(key);
+        // También eliminar de observaciones activas
+        self.observations.remove(&entry.relative_path);
     }
 
     /// Número de archivos bajo observación

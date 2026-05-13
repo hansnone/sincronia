@@ -12,7 +12,7 @@ use crate::metadata;
 use crate::planner::CopyJob;
 use crate::verifier;
 use crossbeam_channel::{Receiver, Sender};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::thread;
 use std::time::{Duration, Instant};
@@ -64,6 +64,8 @@ pub struct WorkerPool {
     worker_handles: Vec<thread::JoinHandle<()>>,
     /// Señal de parada
     shutdown: Arc<AtomicBool>,
+    /// Contador de trabajos enviados (para saber cuántos resultados esperar)
+    submitted_count: Arc<AtomicUsize>,
 }
 
 impl WorkerPool {
@@ -120,6 +122,7 @@ impl WorkerPool {
             result_receiver,
             worker_handles,
             shutdown: shutdown_signal,
+            submitted_count: Arc::new(AtomicUsize::new(0)),
         }
     }
 
@@ -128,7 +131,9 @@ impl WorkerPool {
         self.job_sender.send(job).map_err(|_| SincroniaError::Copy {
             path: std::path::PathBuf::new(),
             message: "Canal de trabajos cerrado".into(),
-        })
+        })?;
+        self.submitted_count.fetch_add(1, Ordering::SeqCst);
+        Ok(())
     }
 
     /// Recoge todos los resultados disponibles (no bloqueante)
@@ -140,25 +145,53 @@ impl WorkerPool {
         results
     }
 
-    /// Espera a que todos los trabajos pendientes se completen
+    /// Espera a que todos los trabajos pendientes se completen.
+    /// Espera hasta recibir exactamente tantos resultados como trabajos enviados,
+    /// o hasta que se agote el timeout.
     pub fn wait_for_completion(&self, timeout: Duration) -> Vec<JobResult> {
-        let mut results = Vec::new();
+        let expected = self.submitted_count.load(Ordering::SeqCst);
+        let mut results = Vec::with_capacity(expected);
         let start = Instant::now();
 
-        // Cerrar el sender para que los workers sepan que no hay más trabajos
-        // (no lo hacemos aquí — el caller debe dejar de enviar)
+        while results.len() < expected && start.elapsed() < timeout {
+            if self.shutdown.load(Ordering::Relaxed) {
+                // En shutdown, recoger lo que haya disponible sin bloquear
+                while let Ok(result) = self.result_receiver.try_recv() {
+                    results.push(result);
+                }
+                break;
+            }
 
-        while start.elapsed() < timeout {
-            match self.result_receiver.recv_timeout(Duration::from_millis(100)) {
+            match self.result_receiver.recv_timeout(Duration::from_millis(500)) {
                 Ok(result) => results.push(result),
                 Err(crossbeam_channel::RecvTimeoutError::Timeout) => {
-                    // Verificar si todos los workers terminaron
-                    if self.job_sender.is_empty() && self.result_receiver.is_empty() {
-                        break;
-                    }
+                    // Seguir esperando — hay workers procesando
+                    debug!(
+                        "Esperando resultados: {}/{} recibidos ({:.1}s)",
+                        results.len(),
+                        expected,
+                        start.elapsed().as_secs_f64()
+                    );
                 }
-                Err(crossbeam_channel::RecvTimeoutError::Disconnected) => break,
+                Err(crossbeam_channel::RecvTimeoutError::Disconnected) => {
+                    warn!(
+                        "Canal de resultados desconectado con {}/{} resultados",
+                        results.len(),
+                        expected
+                    );
+                    break;
+                }
             }
+        }
+
+        if results.len() < expected {
+            warn!(
+                "wait_for_completion terminó con {}/{} resultados (timeout={}, shutdown={})",
+                results.len(),
+                expected,
+                start.elapsed() >= timeout,
+                self.shutdown.load(Ordering::Relaxed)
+            );
         }
 
         results
