@@ -34,18 +34,11 @@ scan_interval_seconds_after_changes = 10
 
 [[sync_pairs]]
 # Sustituya por rutas reales existentes en su equipo.
-source_path = "C:\\Users\\thebe\\Desktop\\Nueva carpeta"
-source_virtual_drive_letter = "X:"
-target_path = "C:\\Users\\thebe\\Desktop\\Nueva carpeta - copia"
-target_virtual_drive_letter = "Y:"
+source_path = "C:\\Users\\thebe\\OneDrive - Fundación Universitaria San Pablo CEU\\Libros"
+source_virtual_drive_letter = "A:"
+target_path = "C:\\B"
+target_virtual_drive_letter = "B:"
 minimum_file_stable_seconds = 30
-
-[[sync_pairs]]
-source_path = "C:\\Users\\thebe\\Desktop\\Nueva carpeta - copia (2)"
-source_virtual_drive_letter = "M:"
-target_path = "C:\\Users\\thebe\\Desktop\\Nueva carpeta - copia (3)"
-target_virtual_drive_letter = "N:"
-minimum_file_stable_seconds = 60
 
 # ─── Motor de Copia ──────────────────────────────────────────────────
 
